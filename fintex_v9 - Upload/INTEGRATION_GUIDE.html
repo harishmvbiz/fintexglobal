@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Integration Guide | Fintex Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#0B1829;--navy-mid:#0E1F34;--cyan:#08C8E8;--green:#32C84E;--white:#FFFFFF;--off-white:#E8F4F8;--muted:#8AAABB;--muted-lt:#B0CCD8;--amber:#F59E0B;--font-h:'Inter',sans-serif;--font-b:'DM Sans',sans-serif;--font-m:'JetBrains Mono',monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-b);background:var(--navy);color:var(--off-white);line-height:1.6;}
+.wrap{max-width:900px;margin:0 auto;padding:40px 24px 80px;}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--cyan);font-size:.82rem;font-weight:600;text-decoration:none;margin-bottom:28px;opacity:.8;}
+.back:hover{opacity:1;}
+h1{font-family:var(--font-h);font-size:2rem;font-weight:800;color:#fff;margin-bottom:8px;}
+.subtitle{font-size:.95rem;color:var(--muted-lt);margin-bottom:40px;}
+.section{margin-bottom:40px;}
+h2{font-family:var(--font-h);font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(8,200,232,.1);}
+h3{font-family:var(--font-h);font-size:.9rem;font-weight:700;color:var(--cyan);margin:16px 0 8px;}
+p{font-size:.88rem;color:var(--muted-lt);margin-bottom:12px;line-height:1.7;}
+.card{background:rgba(15,32,53,.7);border:1px solid rgba(8,200,232,.12);border-radius:12px;padding:20px 22px;margin-bottom:16px;}
+pre{background:rgba(0,0,0,.4);border:1px solid rgba(8,200,232,.15);border-radius:8px;padding:16px;overflow-x:auto;font-family:var(--font-m);font-size:.78rem;color:#B0CCD8;margin:10px 0 16px;line-height:1.7;}
+code{font-family:var(--font-m);font-size:.8rem;background:rgba(8,200,232,.1);color:var(--cyan);padding:1px 7px;border-radius:4px;}
+ol,ul{padding-left:20px;margin-bottom:12px;}
+li{font-size:.87rem;color:var(--muted-lt);margin-bottom:6px;line-height:1.6;}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(8,200,232,.15);color:var(--cyan);font-size:.72rem;font-weight:700;margin-right:8px;flex-shrink:0;}
+.tip{background:rgba(50,200,78,.06);border:1px solid rgba(50,200,78,.2);border-radius:8px;padding:12px 16px;font-size:.82rem;color:var(--muted-lt);margin-top:10px;}
+.tip strong{color:var(--green);}
+.warn{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:12px 16px;font-size:.82rem;color:var(--muted-lt);margin-top:10px;}
+.warn strong{color:var(--amber);}
+.badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:20px;font-size:.7rem;font-weight:700;}
+.badge-free{background:rgba(50,200,78,.15);color:var(--green);border:1px solid rgba(50,200,78,.3);}
+.badge-paid{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+.toc{background:rgba(8,200,232,.04);border:1px solid rgba(8,200,232,.12);border-radius:10px;padding:16px 20px;margin-bottom:36px;}
+.toc-title{font-family:var(--font-h);font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.toc a{display:block;font-size:.83rem;color:var(--cyan);text-decoration:none;padding:3px 0;opacity:.8;}
+.toc a:hover{opacity:1;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="admin-portal.html" class="back">← Back to Admin Portal</a>
+  <h1>🔗 Integration Guide</h1>
+  <p class="subtitle">Complete setup guide for Google Sheets, Drive, WhatsApp, Email notifications and document storage. Updated for V6 Portal System.</p>
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <a href="#sheets">1. Google Sheets — Auto-save all leads & submissions</a>
+    <a href="#email">2. EmailJS — Email notifications (free, no backend)</a>
+    <a href="#whatsapp">3. WhatsApp Notifications</a>
+    <a href="#gdrive">4. Google Drive — Document storage</a>
+    <a href="#onedrive">5. Microsoft OneDrive — Alternative storage</a>
+    <a href="#fyi">6. FYI — Accounting firm document manager</a>
+    <a href="#recommended">7. Recommended Setup (Free, ready in 30 min)</a>
+  </div>
+
+  <!-- ── GOOGLE SHEETS ── -->
+  <div class="section" id="sheets">
+    <h2>📊 1. Google Sheets <span class="badge badge-free">Free</span></h2>
+    <p>Every contact form lead and client portal submission gets auto-saved to a Google Sheet. No backend server required — uses Google Apps Script webhook.</p>
+    
+    <div class="card">
+      <h3>Step 1 — Create the Sheet</h3>
+      <ol>
+        <li>Go to <code>sheets.google.com</code> → Create new spreadsheet</li>
+        <li>Name it: <code>Fintex CRM</code></li>
+        <li>Create two sheets (tabs): <code>Leads</code> and <code>Submissions</code></li>
+        <li>In <strong>Leads</strong> sheet, add headers in row 1: <code>Date | Name | Email | Phone | Region | Service | Message</code></li>
+        <li>In <strong>Submissions</strong> sheet, add: <code>Date | Client | Company | Region | Service | Period | Revenue | Files | Notes</code></li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>Step 2 — Apps Script Webhook</h3>
+      <p>In your Google Sheet: <strong>Extensions → Apps Script</strong> → paste this code:</p>
+      <pre>
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    
+    if (data.type === 'lead') {
+      var sheet = ss.getSheetByName('Leads');
+      sheet.appendRow([
+        new Date().toLocaleString(),
+        data.name, data.email, data.phone,
+        data.region, data.service, data.message
+      ]);
+    }
+    
+    if (data.type === 'portal_submission') {
+      var sheet = ss.getSheetByName('Submissions');
+      sheet.appendRow([
+        new Date().toLocaleString(),
+        data.client, data.company, data.region,
+        data.service, data.period, data.revenue,
+        (data.files || []).join(', '), data.notes
+      ]);
+    }
+    
+    return ContentService
+      .createTextOutput(JSON.stringify({status: 'ok'}))
+      .setMimeType(ContentService.MimeType.JSON);
+      
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({status: 'error', msg: err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+      </pre>
+      <ol>
+        <li>Click <strong>Deploy → New deployment</strong></li>
+        <li>Type: <strong>Web app</strong></li>
+        <li>Execute as: <strong>Me</strong></li>
+        <li>Who has access: <strong>Anyone</strong></li>
+        <li>Click <strong>Deploy → Authorize → Copy the Web App URL</strong></li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>Step 3 — Connect to Portal</h3>
+      <ol>
+        <li>Go to <strong>Admin Portal → Notifications</strong></li>
+        <li>Paste the Web App URL in <strong>Google Sheet Webhook URL</strong></li>
+        <li>Save. All future leads and submissions auto-save to your sheet ✓</li>
+      </ol>
+    </div>
+    <div class="tip"><strong>💡 Tip:</strong> Share the Google Sheet with <code>arun@tensquare.com.au</code> so both admins see live data.</div>
+  </div>
+
+  <!-- ── EMAILJS ── -->
+  <div class="section" id="email">
+    <h2>📧 2. EmailJS — Email Notifications <span class="badge badge-free">Free (200/mo)</span></h2>
+    <p>Send yourself an email whenever a lead comes in or a client submits their portal. No backend server needed.</p>
+    <div class="card">
+      <ol>
+        <li>Sign up at <code>emailjs.com</code> (free — 200 emails/month)</li>
+        <li>Add Email Service: connect your Gmail (<code>info@fintexglobal.com</code>)</li>
+        <li>Create Email Template — click <strong>Email Templates → Create Template</strong></li>
+        <li>Use this template body:</li>
+      </ol>
+      <pre>
+Subject: 🔔 New {{submission_type}} — Fintex Portal
+
+Hi Harish,
+
+A new {{submission_type}} has been received:
+
+Client: {{client_name}}
+Email: {{client_email}}
+Region: {{region}}
+Service: {{service}}
+Date: {{date}}
+
+Details:
+{{details}}
+
+— Fintex Portal Notification System
+      </pre>
+      <ol start="5">
+        <li>Save template. Copy <strong>Service ID</strong>, <strong>Template ID</strong>, and <strong>Public Key</strong></li>
+        <li>Paste all three into <strong>Admin Portal → Notifications</strong></li>
+      </ol>
+    </div>
+    <div class="tip"><strong>💡 Upgrade path:</strong> At 200+ emails/month, upgrade to EmailJS Pro ($15/mo) or switch to SMTP via Mailgun/SendGrid.</div>
+  </div>
+
+  <!-- ── WHATSAPP ── -->
+  <div class="section" id="whatsapp">
+    <h2>💬 3. WhatsApp Notifications</h2>
+    <p>Two options depending on budget and volume:</p>
+    <div class="card">
+      <h3>Option A — WhatsApp link (Free, manual)</h3>
+      <p>When a client submits, the portal generates a pre-filled WhatsApp link. Click it to open WhatsApp with submission details pre-typed.</p>
+      <p>This works automatically — no setup needed. The link uses your number <code>971557282794</code>.</p>
+    </div>
+    <div class="card">
+      <h3>Option B — Twilio WhatsApp Sandbox <span class="badge badge-paid">~$0.005/msg</span></h3>
+      <ol>
+        <li>Sign up at <code>twilio.com</code></li>
+        <li>Go to Messaging → Try WhatsApp Sandbox</li>
+        <li>Send the join code from your WhatsApp to activate sandbox</li>
+        <li>Get <code>Account SID</code> and <code>Auth Token</code> from dashboard</li>
+        <li>Use the Twilio REST API to send messages on submission:
+          <pre>
+// In client-portal.html notifyAdmin() function:
+fetch('https://api.twilio.com/2010-04-01/Accounts/ACXXXXXXX/Messages.json', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Basic ' + btoa('ACXXXXXXX:your_auth_token'),
+    'Content-Type': 'application/x-www-form-urlencoded'
+  },
+  body: new URLSearchParams({
+    From: 'whatsapp:+14155238886',  // Twilio sandbox number
+    To: 'whatsapp:+971557282794',   // Your WhatsApp
+    Body: `New submission from ${clientName}`
+  })
+});
+          </pre>
+        </li>
+      </ol>
+      <div class="warn"><strong>⚠ Note:</strong> For production WhatsApp Business API (custom sender number), apply via <code>business.whatsapp.com</code>. Requires business verification (1–2 weeks).</div>
+    </div>
+  </div>
+
+  <!-- ── GOOGLE DRIVE ── -->
+  <div class="section" id="gdrive">
+    <h2>☁️ 4. Google Drive — Document Storage <span class="badge badge-free">Free (15GB)</span></h2>
+    <p>Auto-upload client documents from the portal directly into a structured Google Drive folder.</p>
+    <div class="card">
+      <h3>Simple Setup (Manual, no API)</h3>
+      <ol>
+        <li>Create folder in Drive: <code>Fintex-Clients/</code></li>
+        <li>Inside, create sub-folders per client: <code>James-Whitfield/</code>, <code>Priya-Sharma/</code></li>
+        <li>When clients submit, download files from portal and upload to their Drive folder</li>
+        <li>Share the folder with <code>arun@tensquare.com.au</code> for joint access</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Automated Setup (Drive API) <span class="badge badge-free">Free</span></h3>
+      <ol>
+        <li>Go to <code>console.cloud.google.com</code> → Create Project: <code>Fintex Portal</code></li>
+        <li>Enable <strong>Google Drive API</strong></li>
+        <li>Create <strong>Service Account</strong> → Download JSON key file</li>
+        <li>Create folder <code>Fintex-Client-Docs</code> in Drive → Share with service account email</li>
+        <li>Deploy a small serverless function (Netlify Function / Cloudflare Worker) to proxy the upload:
+          <pre>
+// netlify/functions/upload-to-drive.js
+const { google } = require('googleapis');
+
+exports.handler = async (event) => {
+  const auth = new google.auth.GoogleAuth({
+    credentials: JSON.parse(process.env.GOOGLE_SERVICE_KEY),
+    scopes: ['https://www.googleapis.com/auth/drive']
+  });
+  const drive = google.drive({ version: 'v3', auth });
+  const { fileName, fileData, clientName } = JSON.parse(event.body);
+  
+  // Find or create client folder
+  const folder = await drive.files.create({
+    requestBody: { name: clientName, mimeType: 'application/vnd.google-apps.folder',
+      parents: [process.env.FINTEX_FOLDER_ID] }
+  });
+  
+  // Upload file
+  await drive.files.create({
+    requestBody: { name: fileName, parents: [folder.data.id] },
+    media: { body: Buffer.from(fileData, 'base64') }
+  });
+  
+  return { statusCode: 200, body: JSON.stringify({ ok: true }) };
+};
+          </pre>
+        </li>
+        <li>Set environment variables in Netlify: <code>GOOGLE_SERVICE_KEY</code>, <code>FINTEX_FOLDER_ID</code></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ── ONEDRIVE ── -->
+  <div class="section" id="onedrive">
+    <h2>🟦 5. Microsoft OneDrive <span class="badge badge-paid">Microsoft 365 required</span></h2>
+    <div class="card">
+      <ol>
+        <li>Register app at <code>portal.azure.com</code> → Azure Active Directory → App Registrations → New Registration</li>
+        <li>Name: <code>Fintex Portal</code> → Accounts in this org only → Register</li>
+        <li>API Permissions → Add → Microsoft Graph → <code>Files.ReadWrite.All</code> → Grant admin consent</li>
+        <li>Certificates &amp; Secrets → New client secret → Copy value immediately</li>
+        <li>Note: <strong>Application (client) ID</strong> and <strong>Directory (tenant) ID</strong></li>
+        <li>Create folder in OneDrive: <code>/Fintex-Clients/</code></li>
+        <li>Get folder ID via Graph Explorer: <code>GET /me/drive/root:/Fintex-Clients</code></li>
+        <li>Use Microsoft Graph API to upload files:
+          <pre>
+// Get token
+const token = await fetch(
+  `https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/token`,
+  { method: 'POST', body: new URLSearchParams({
+    client_id: CLIENT_ID, client_secret: CLIENT_SECRET,
+    grant_type: 'client_credentials',
+    scope: 'https://graph.microsoft.com/.default'
+  })}
+).then(r=>r.json());
+
+// Upload file
+await fetch(
+  `https://graph.microsoft.com/v1.0/drives/${DRIVE_ID}/items/${FOLDER_ID}:/${fileName}:/content`,
+  { method: 'PUT', headers: { Authorization: 'Bearer '+token.access_token }, body: fileBuffer }
+);
+          </pre>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ── FYI ── -->
+  <div class="section" id="fyi">
+    <h2>📁 6. FYI Document Manager <span class="badge badge-paid">~$49/mo</span></h2>
+    <p>FYI is purpose-built for accounting firms — integrates with Xero, MYOB, QBO and has smart client folder structure.</p>
+    <div class="card">
+      <ol>
+        <li>Sign up at <code>usefyi.com</code> → Start free trial</li>
+        <li>Settings → Integrations → API → Generate API Key</li>
+        <li>Create clients in FYI matching names in the Fintex portal</li>
+        <li>Use FYI API to upload:
+          <pre>
+// POST /api/v1/documents
+fetch('https://api.usefyi.com/api/v1/documents', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_FYI_API_KEY',
+    'Content-Type': 'multipart/form-data'
+  },
+  body: formData  // FormData with file + client_id + folder
+});
+          </pre>
+        </li>
+        <li>Files automatically appear in client's FYI folder, linked to their contact record</li>
+      </ol>
+      <div class="tip"><strong>💡 Best for:</strong> When you have 10+ active clients and want proper version control, email integration, and workflow automations.</div>
+    </div>
+  </div>
+
+  <!-- ── RECOMMENDED ── -->
+  <div class="section" id="recommended">
+    <h2>⭐ 7. Recommended Setup (Free, 30 min)</h2>
+    <div class="card" style="border-color:rgba(50,200,78,.3);">
+      <p style="color:#fff;font-weight:600;margin-bottom:12px;">Phase 1 — Start free (Day 1)</p>
+      <ol>
+        <li><strong>Google Sheets webhook</strong> → All leads + portal submissions auto-saved</li>
+        <li><strong>EmailJS</strong> → Email alert to <code>info@fintexglobal.com</code> on every submission</li>
+        <li><strong>WhatsApp link</strong> → Pre-filled message opens in WhatsApp when client submits</li>
+        <li><strong>Manual Google Drive</strong> → Download files from portal, upload to Drive folder</li>
+      </ol>
+      <p style="margin-top:12px;font-size:.82rem;color:var(--muted-lt);">Total cost: <strong style="color:var(--green);">$0/month</strong>. Setup time: ~30 minutes.</p>
+    </div>
+    <div class="card">
+      <p style="color:#fff;font-weight:600;margin-bottom:12px;">Phase 2 — Scale (when you have 15+ clients)</p>
+      <ol>
+        <li>Add <strong>Twilio WhatsApp</strong> for automated notifications</li>
+        <li>Set up <strong>Google Drive API</strong> for automated file sync</li>
+        <li>Consider <strong>FYI</strong> for professional document management</li>
+        <li>Add <strong>Make.com</strong> (formerly Integromat) to automate lead-to-client workflows</li>
+      </ol>
+    </div>
+    <div style="text-align:center;margin-top:20px;">
+      <a href="admin-portal.html" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#32C84E,#08C8E8);color:#0B1829;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;padding:13px 28px;border-radius:50px;text-decoration:none;">→ Go to Admin Portal</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
