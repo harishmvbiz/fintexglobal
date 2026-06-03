@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Banner & Content Update Guide | Fintex Global Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#0B1829;color:#EBF4FA;line-height:1.7;}
+.wrap{max-width:900px;margin:0 auto;padding:60px 24px;}
+h1{font-size:2rem;font-weight:700;color:#fff;margin-bottom:8px;}
+h2{font-size:1.2rem;font-weight:700;color:#00B4D8;margin:36px 0 12px;padding-top:12px;border-top:1px solid rgba(0,180,216,.12);}
+h3{font-size:.95rem;font-weight:700;color:#fff;margin:20px 0 8px;}
+p{font-size:.88rem;color:#9BBDD4;margin-bottom:10px;}
+code{background:rgba(0,180,216,.1);color:#48CAE4;padding:2px 7px;border-radius:5px;font-size:.83rem;font-family:monospace;}
+pre{background:#0E1F34;border:1px solid rgba(0,180,216,.18);border-radius:10px;padding:18px 20px;overflow-x:auto;margin:12px 0 20px;font-size:.8rem;line-height:1.7;color:#9BBDD4;}
+.step{background:#111E30;border:1px solid rgba(0,180,216,.12);border-radius:12px;padding:20px 22px;margin-bottom:14px;}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#00B4D8;color:#0B1829;font-size:12px;font-weight:700;margin-right:10px;flex-shrink:0;}
+.step-head{display:flex;align-items:center;margin-bottom:8px;}
+.step-title{font-weight:700;color:#fff;font-size:.95rem;}
+.tip{background:rgba(232,184,0,.07);border:1px solid rgba(232,184,0,.18);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:.83rem;color:#E8B800;}
+.warn{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:.83rem;color:#F87171;}
+a{color:#00B4D8;}
+ul{margin:8px 0 14px 20px;font-size:.86rem;color:#9BBDD4;}
+li{margin-bottom:5px;}
+.badge{display:inline-flex;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-right:5px;}
+.badge.au{background:rgba(232,184,0,.1);color:#E8B800;border:1px solid rgba(232,184,0,.2);}
+.badge.in{background:rgba(224,123,0,.1);color:#E07B00;border:1px solid rgba(224,123,0,.2);}
+.badge.uae{background:rgba(0,180,216,.1);color:#00B4D8;border:1px solid rgba(0,180,216,.2);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="index.html" style="font-size:.82rem;color:#6B8FAB;text-decoration:none;">← Back to Website</a>
+  <h1 style="margin-top:24px;">✏️ Content Update Guide</h1>
+  <p style="font-size:1rem;color:#9BBDD4;max-width:600px;margin-bottom:32px;">How to update banners, testimonials, contact details, and other content on the Fintex Global Group website. No coding required for most changes.</p>
+
+  <h2>📢 1. How to Update Banners (Promotional Slides)</h2>
+  <p>The homepage shows a rotating banner slider with up to 4 promotional slides. Each slide has: an eyebrow label, headline, subtext, two buttons, and a background colour.</p>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">1</span><span class="step-title">Open <code>index.html</code> in a text editor (e.g. VS Code, Notepad++)</span></div>
+    <p>Find the section that starts with:</p>
+    <pre>&lt;!-- BANNER SLIDER --&gt;</pre>
+    <p>Each slide is a <code>&lt;div class="banner-slide"&gt;</code> block. You will see 4 of these.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">2</span><span class="step-title">Edit the text inside each slide</span></div>
+    <p>Each slide contains these parts you can change:</p>
+    <pre>&lt;!-- BANNER SLIDE — edit freely --&gt;
+&lt;span class="banner-eyebrow" style="color:#E8B800;"&gt;
+  🇦🇺 Australia — New Clients     ← CHANGE THIS LABEL
+&lt;/span&gt;
+&lt;h2 class="banner-title"&gt;
+  Free BAS Review for New AU Clients   ← CHANGE THIS HEADLINE
+&lt;/h2&gt;
+&lt;p class="banner-sub"&gt;
+  First-time clients get a complimentary...  ← CHANGE THIS TEXT
+&lt;/p&gt;
+&lt;a href="contact.html?service=australia-trial" class="btn btn-au"&gt;
+  Claim Free Review →   ← CHANGE BUTTON TEXT
+&lt;/a&gt;</pre>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">3</span><span class="step-title">Add a new banner slide</span></div>
+    <p>Copy this template and paste it inside the <code>&lt;div class="banner-track"&gt;</code>:</p>
+    <pre>&lt;div class="banner-slide"&gt;
+  &lt;div class="banner-bg" style="background:linear-gradient(135deg,rgba(0,180,216,.12),rgba(11,24,41,1));"&gt;&lt;/div&gt;
+  &lt;div class="banner-slide-inner"&gt;
+    &lt;span class="banner-eyebrow" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#00B4D8;"&gt;
+      YOUR LABEL HERE
+    &lt;/span&gt;
+    &lt;h2 class="banner-title"&gt;Your Headline Here&lt;/h2&gt;
+    &lt;p class="banner-sub" style="color:rgba(235,244,250,.75);"&gt;
+      Your promotional message goes here. Keep it to 2–3 sentences.
+    &lt;/p&gt;
+    &lt;div class="banner-btns"&gt;
+      &lt;a href="contact.html" class="btn btn-primary"&gt;Primary Button →&lt;/a&gt;
+      &lt;a href="services.html" class="btn btn-outline"&gt;Secondary Button&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+    <p>Then add a corresponding dot button inside <code>&lt;div class="banner-dots"&gt;</code>:</p>
+    <pre>&lt;button class="banner-dot" onclick="goSlide(4)" aria-label="Slide 5"&gt;&lt;/button&gt;</pre>
+    <p>And update the <code>total</code> variable in the slider script from <code>4</code> to <code>5</code>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">4</span><span class="step-title">Remove a banner slide</span></div>
+    <p>Delete the entire <code>&lt;div class="banner-slide"&gt;...&lt;/div&gt;</code> block and its matching dot button. Update the <code>total</code> variable accordingly.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">5</span><span class="step-title">Change the auto-rotate speed</span></div>
+    <p>Find <code>setInterval(function(){goSlide(cur+1);}, 5500)</code> in the banner script. Change <code>5500</code> to your desired milliseconds (e.g. <code>4000</code> = 4 seconds, <code>8000</code> = 8 seconds).</p>
+  </div>
+
+  <div class="tip">💡 Button colour options: <code>btn-au</code> (gold), <code>btn-in</code> (saffron), <code>btn-uae</code> (cyan), <code>btn-primary</code> (blue gradient), <code>btn-outline</code> (transparent/border).</div>
+
+  <h2>⭐ 2. How to Update Testimonials</h2>
+  <p>Testimonials appear on the homepage below the services section. Each card has a star rating, quote, client name, role, initials and region flag.</p>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">1</span><span class="step-title">Open <code>index.html</code> and find the testimonials section</span></div>
+    <pre>&lt;!-- TESTIMONIALS --&gt;
+&lt;section class="testimonials-section"&gt;</pre>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">2</span><span class="step-title">Edit an existing testimonial card</span></div>
+    <pre>&lt;div class="testi-card reveal"&gt;
+  &lt;div class="testi-stars"&gt;⭐⭐⭐⭐⭐&lt;/div&gt;
+  &lt;div class="testi-text"&gt;"Your client quote here..."&lt;/div&gt;
+  &lt;div class="testi-author"&gt;
+    &lt;div class="testi-ava" style="background:rgba(232,184,0,.1);color:#E8B800;"&gt;AB&lt;/div&gt;
+    &lt;div&gt;
+      &lt;div class="testi-name"&gt;Client Name&lt;/div&gt;
+      &lt;div class="testi-role"&gt;Role · City, Country&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="testi-region"&gt;🇦🇺&lt;/div&gt;
+&lt;/div&gt;</pre>
+    <p>Change the initials <code>AB</code>, name, role, quote and flag emoji. Colour options: <code>#E8B800</code> (AU gold), <code>#E07B00</code> (India saffron), <code>#00B4D8</code> (UAE cyan).</p>
+  </div>
+
+  <h2>📞 3. How to Update Contact Details</h2>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">1</span><span class="step-title">Replace all placeholder contacts at once</span></div>
+    <p>Use Find & Replace (Ctrl+H in VS Code) across ALL files:</p>
+    <ul>
+      <li><code>REPLACE_AU_WHATSAPP</code> → Arun's number, e.g. <code>61412345678</code></li>
+      <li><code>REPLACE_AU_EMAIL</code> → Arun's email, e.g. <code>arun@tensquare.com.au</code></li>
+      <li><code>REPLACE_INDIA_WHATSAPP</code> → India number, e.g. <code>919876543210</code></li>
+      <li><code>REPLACE_INDIA_EMAIL</code> → India email, e.g. <code>india@fintexglobal.com</code></li>
+    </ul>
+    <div class="tip">💡 The UAE WhatsApp (971557282794) and email (info@fintexglobal.com) are already set.</div>
+  </div>
+
+  <h2>👥 4. How to Add / Update Team Members</h2>
+  <p>Open <code>team.html</code>. Each team card follows this structure. Copy an existing card and update the fields:</p>
+  <ul>
+    <li>Change the initials in <code>.tc-ava</code></li>
+    <li>Update name, title, and qualifications badges</li>
+    <li>Update the info cells (Based in, Specialises in, etc.)</li>
+    <li>Update LinkedIn URL and WhatsApp number</li>
+  </ul>
+  <p>Replace a "Coming Soon" placeholder by deleting the <code>&lt;div class="coming-soon"&gt;</code> block and pasting in a new team card.</p>
+
+  <h2>📝 5. How to Add a Blog Article</h2>
+  <p>Open <code>blog.html</code>. Find the <code>&lt;div class="blog-grid"&gt;</code> section. Copy this template and paste it at the top:</p>
+  <pre>&lt;a href="contact.html" class="blog-card reveal" data-cat="au"&gt;
+  &lt;div class="blog-card-stripe" style="background:var(--au-gold);"&gt;&lt;/div&gt;
+  &lt;div class="blog-card-body"&gt;
+    &lt;div class="blog-card-tag" style="color:var(--au-gold);"&gt;🇦🇺 AUSTRALIA&lt;/div&gt;
+    &lt;div class="blog-card-title"&gt;Your Article Title Here&lt;/div&gt;
+    &lt;div class="blog-card-desc"&gt;Brief description of the article — 2 sentences max.&lt;/div&gt;
+    &lt;span class="blog-read-more" style="color:var(--au-gold);"&gt;Read Article →&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/a&gt;</pre>
+  <p>Set <code>data-cat</code> to: <code>au</code> / <code>in</code> / <code>uae</code> / <code>outsourcing</code> / <code>security</code> to enable the filter.</p>
+
+  <h2>🎨 6. How to Change Brand Colours</h2>
+  <p>Open <code>shared.css</code>. All colours are CSS variables at the top of the file:</p>
+  <pre>:root{
+  --navy:      #0B1829;    /* Page background */
+  --cyan:      #00B4D8;    /* Primary accent */
+  --au-gold:   #E8B800;    /* Australia colour */
+  --in-saffron:#E07B00;    /* India colour */
+  --uae-cyan:  #00B4D8;    /* UAE colour */
+}</pre>
+  <p>Change any hex value to update that colour globally across the entire site.</p>
+
+  <h2>🔐 7. How to Update Portal Credentials</h2>
+  <ol style="margin:10px 0 0 20px;font-size:.86rem;color:#9BBDD4;">
+    <li style="margin-bottom:6px;">Go to <a href="portal.html">portal.html</a> and log in as Admin</li>
+    <li style="margin-bottom:6px;">Click <strong>🔑 Credentials</strong> in the admin menu</li>
+    <li style="margin-bottom:6px;">Use the Reset button to change any existing password</li>
+    <li style="margin-bottom:6px;">Use the Add form to create new client or admin accounts</li>
+  </ol>
+  <div class="warn">⚠️ Change all demo passwords before publishing. Default credentials are stored in browser localStorage — replace with a proper backend (Supabase/Firebase) for production use.</div>
+
+  <h2>🚀 8. Publishing / Deploying Updates</h2>
+  <div class="step">
+    <div class="step-head"><span class="step-num">1</span><span class="step-title">Edit your files locally</span></div>
+    <p>Make your changes in a text editor. Save all modified files.</p>
+  </div>
+  <div class="step">
+    <div class="step-head"><span class="step-num">2</span><span class="step-title">Re-deploy to Netlify</span></div>
+    <p>Option A — Drag & Drop: Go to <a href="https://app.netlify.com" target="_blank">app.netlify.com</a> → your site → Deploys tab → drag the entire folder onto the deploy dropzone.</p>
+    <p>Option B — Git: If connected to GitHub, just push your changes and Netlify auto-deploys.</p>
+  </div>
+  <div class="step">
+    <div class="step-head"><span class="step-num">3</span><span class="step-title">Verify after deploy</span></div>
+    <p>Visit your live domain. Hard refresh (Ctrl+Shift+R) to clear browser cache. Check the banner appears, links work, and the portal login functions correctly.</p>
+  </div>
+
+  <div style="margin-top:40px;padding:20px 22px;background:#111E30;border:1px solid rgba(0,180,216,.12);border-radius:12px;">
+    <div style="font-weight:700;color:#fff;margin-bottom:6px;">Need more changes?</div>
+    <p style="margin:0;">Upload <code>FintexGlobalGroup_Website_v9.zip</code> to Claude and paste the <code>PROJECT_CONTEXT_V9.md</code> context block to continue from exactly where you left off.</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#0B1829"/>
+<meta name="description" content="Fintex Global Group secure portal — client document submission and admin dashboard."/>
+<meta property="og:title" content="Portal | Fintex Global Group"/>
+<meta property="og:description" content="Fintex Global Group secure portal — client document submission and admin dashboard."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="https://fintexglobal.com/og-image.png"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://fintexglobal.com/portal"/>
+<title>Portal Login | Fintex Global Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='a' x1='0%25' y1='100%25' x2='55%25' y2='0%25'><stop offset='0%25' stop-color='%230D2B55'/><stop offset='100%25' stop-color='%2338B6CC'/></linearGradient><linearGradient id='b' x1='100%25' y1='100%25' x2='45%25' y2='0%25'><stop offset='0%25' stop-color='%230D2B55'/><stop offset='100%25' stop-color='%2344C8E0'/></linearGradient></defs><polygon points='2,43 11,21 15,31 9,43' fill='url(%23a)' opacity='.88'/><polygon points='46,43 37,21 33,31 39,43' fill='url(%23b)' opacity='.88'/><polygon points='9,43 24,5 21,19 16,43' fill='url(%23a)'/><polygon points='39,43 24,5 27,19 32,43' fill='url(%23b)'/><polygon points='21,19 24,5 27,19 24,29' fill='%23081828' opacity='.75'/><circle cx='24' cy='6.5' r='5.8' fill='none' stroke='%2344C8E0' stroke-width='1.05'/><line x1='24' y1='.7' x2='24' y2='12.3' stroke='%2344C8E0' stroke-width='.8'/><line x1='18.2' y1='6.5' x2='29.8' y2='6.5' stroke='%2344C8E0' stroke-width='.8'/><path d='M19.8,4 Q24,2.8 28.2,4' fill='none' stroke='%2344C8E0' stroke-width='.65'/><path d='M19.8,9 Q24,10.2 28.2,9' fill='none' stroke='%2344C8E0' stroke-width='.65'/></svg>"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+body{background:radial-gradient(ellipse at 60% 30%,rgba(0,180,216,.06),transparent 60%),var(--navy);}
+.portal-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:clamp(70px,10vw,90px) clamp(16px,4vw,24px) 40px;}
+.portal-wrap{width:100%;max-width:480px;}
+.portal-logo-row{display:flex;align-items:center;justify-content:center;gap:11px;margin-bottom:28px;}
+.portal-logo-name{font-family:var(--font-h);font-size:14px;font-weight:700;letter-spacing:.5px;
+  background:var(--grad-blue);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;line-height:1.1;}
+.portal-logo-sub{font-size:8px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+.portal-card{background:rgba(17,30,48,.97);border:1px solid var(--border);border-radius:18px;
+  padding:clamp(28px,4vw,40px);box-shadow:0 24px 64px rgba(0,0,0,.4);}
+.portal-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:24px;}
+.portal-tab{flex:1;font-family:var(--font-h);font-size:13px;font-weight:600;
+  padding:10px 8px;background:none;border:none;color:var(--muted);cursor:pointer;
+  transition:all .22s;border-bottom:2px solid transparent;margin-bottom:-2px;}
+.portal-tab.active{color:var(--cyan);border-bottom-color:var(--cyan);}
+.portal-panel{display:none;}
+.portal-panel.active{display:block;}
+.p-label{display:block;font-size:10.5px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.p-input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(0,180,216,.15);
+  border-radius:8px;padding:11px 14px;color:var(--white);font-family:var(--font-b);
+  font-size:.9rem;transition:all .2s;margin-bottom:13px;}
+.p-input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,180,216,.08);}
+.p-input::placeholder{color:var(--muted);}
+.p-btn{width:100%;padding:13px;border-radius:8px;font-family:var(--font-h);font-size:14px;
+  font-weight:600;cursor:pointer;border:none;background:var(--grad-main);
+  color:#fff;transition:var(--tr);margin-top:2px;}
+.p-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,180,216,.3);}
+.p-err{display:none;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);
+  color:#F87171;font-size:.81rem;padding:9px 12px;border-radius:7px;margin-top:10px;}
+.p-note{font-size:.77rem;color:var(--muted);text-align:center;margin-top:14px;line-height:1.55;}
+.p-note a{color:var(--cyan);}
+
+/* ── CLIENT DASHBOARD ── */
+.cdash{display:none;max-width:860px;width:100%;padding:clamp(80px,10vw,96px) clamp(16px,4vw,24px) 60px;margin:0 auto;}
+.step-bar{display:flex;gap:0;margin-bottom:28px;overflow-x:auto;padding-bottom:4px;}
+.step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;
+  position:relative;min-width:72px;}
+.step:not(:last-child)::after{content:'';position:absolute;top:13px;
+  left:calc(50% + 15px);right:calc(-50% + 15px);height:2px;background:var(--border);}
+.step.done:not(:last-child)::after,.step.active:not(:last-child)::after{background:var(--cyan);}
+.step-circle{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:11px;font-weight:700;background:var(--border);
+  color:var(--muted);border:2px solid transparent;transition:all .3s;}
+.step.active .step-circle{background:var(--cyan);color:#fff;border-color:var(--cyan);}
+.step.done .step-circle{background:rgba(0,180,216,.12);color:var(--cyan);border-color:var(--cyan);}
+.step-label{font-size:9.5px;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap;}
+.step.active .step-label,.step.done .step-label{color:var(--cyan);}
+.status-banner{padding:13px 18px;border-radius:10px;margin-bottom:22px;
+  display:flex;align-items:flex-start;gap:11px;}
+.status-banner.pending{background:var(--uae-bg);border:1px solid var(--uae-border);}
+.status-banner.submitted{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);}
+.status-banner.frozen{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);}
+.status-banner.info{background:rgba(232,184,0,.07);border:1px solid var(--au-border);}
+.doc-checklist{background:var(--grad-card);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:16px;}
+.doc-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.doc-item:last-child{border-bottom:none;}
+.doc-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;}
+.doc-check.done{background:var(--cyan);border-color:var(--cyan);color:#fff;}
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:28px;
+  text-align:center;cursor:pointer;transition:all .2s;background:rgba(0,180,216,.02);}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--cyan);background:rgba(0,180,216,.05);}
+
+/* ── ADMIN DASHBOARD ── */
+.adash{display:none;width:100%;max-width:1200px;padding:clamp(80px,10vw,96px) clamp(16px,4vw,24px) 60px;margin:0 auto;}
+.admin-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:28px;border-bottom:1px solid var(--border);padding-bottom:14px;}
+.admin-nav-btn{font-family:var(--font-h);font-size:12px;font-weight:600;padding:7px 14px;
+  border-radius:7px;border:1px solid var(--border);background:transparent;
+  color:var(--muted);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;}
+.admin-nav-btn.active,.admin-nav-btn:hover{background:rgba(0,180,216,.08);
+  border-color:var(--border-md);color:var(--cyan);}
+.admin-section{display:none;}
+.admin-section.active{display:block;}
+.a-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px;}
+.a-stat{background:var(--grad-card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+.a-stat-num{font-family:var(--font-h);font-size:1.7rem;font-weight:700;color:var(--white);}
+.a-stat-lbl{font-size:.74rem;color:var(--muted);margin-top:3px;}
+.a-table{width:100%;border-collapse:collapse;font-size:.83rem;}
+.a-table th{font-family:var(--font-h);font-size:.72rem;font-weight:700;color:var(--muted);
+  letter-spacing:1px;text-transform:uppercase;padding:10px 12px;
+  border-bottom:1px solid var(--border);text-align:left;}
+.a-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--muted-lt);}
+.a-table tr:hover td{background:rgba(0,180,216,.03);}
+.a-badge{display:inline-flex;align-items:center;font-size:.7rem;font-weight:700;
+  padding:2px 8px;border-radius:10px;}
+.a-badge.submitted{background:rgba(16,185,129,.1);color:#34D399;border:1px solid rgba(16,185,129,.2);}
+.a-badge.pending{background:rgba(232,184,0,.1);color:#E8B800;border:1px solid rgba(232,184,0,.2);}
+.a-badge.frozen{background:rgba(239,68,68,.1);color:#F87171;border:1px solid rgba(239,68,68,.2);}
+.a-badge.info{background:rgba(0,180,216,.1);color:var(--cyan);border:1px solid var(--uae-border);}
+.a-action-btn{font-family:var(--font-h);font-size:.72rem;font-weight:600;padding:4px 10px;
+  border-radius:6px;border:1px solid var(--border);background:transparent;
+  color:var(--muted-lt);cursor:pointer;transition:all .2s;margin-right:4px;}
+.a-action-btn:hover{border-color:var(--cyan);color:var(--cyan);}
+.dash-card{background:var(--grad-card);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:16px;}
+.dash-card-title{font-family:var(--font-h);font-size:.84rem;font-weight:700;color:var(--white);margin-bottom:14px;}
+@media(max-width:600px){
+  .admin-nav{gap:4px;}
+  .admin-nav-btn{font-size:11px;padding:6px 10px;}
+  .a-stat-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head><body>
+
+<!-- TOP NAV BAR (minimal for portal) -->
+<nav class="navbar" id="navbar" style="position:fixed;">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><svg class="nav-logo-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="lga" x1="0%" y1="100%" x2="55%" y2="0%">
+    <stop offset="0%" stop-color="#0D2B55"/>
+    <stop offset="55%" stop-color="#1565A8"/>
+    <stop offset="100%" stop-color="#38B6CC"/>
+  </linearGradient>
+  <linearGradient id="lgb" x1="100%" y1="100%" x2="45%" y2="0%">
+    <stop offset="0%" stop-color="#0D2B55"/>
+    <stop offset="55%" stop-color="#1A5FA0"/>
+    <stop offset="100%" stop-color="#44C8E0"/>
+  </linearGradient>
+</defs>
+<!-- Left outer peak -->
+<polygon points="2,43 11,21 15,31 9,43" fill="url(#lga)" opacity=".88"/>
+<!-- Right outer peak -->
+<polygon points="46,43 37,21 33,31 39,43" fill="url(#lgb)" opacity=".88"/>
+<!-- Centre peak left face -->
+<polygon points="9,43 24,5 21,19 16,43" fill="url(#lga)"/>
+<!-- Centre peak right face -->
+<polygon points="39,43 24,5 27,19 32,43" fill="url(#lgb)"/>
+<!-- Centre inner depth cut -->
+<polygon points="21,19 24,5 27,19 24,29" fill="#081828" opacity=".75"/>
+<!-- Globe circle -->
+<circle cx="24" cy="6.5" r="5.8" fill="none" stroke="#44C8E0" stroke-width="1.05"/>
+<!-- Globe vertical axis -->
+<line x1="24" y1="0.7" x2="24" y2="12.3" stroke="#44C8E0" stroke-width=".8"/>
+<!-- Globe horizontal equator -->
+<line x1="18.2" y1="6.5" x2="29.8" y2="6.5" stroke="#44C8E0" stroke-width=".8"/>
+<!-- Globe upper latitude arc -->
+<path d="M19.8,4 Q24,2.8 28.2,4" fill="none" stroke="#44C8E0" stroke-width=".65" opacity=".75"/>
+<!-- Globe lower latitude arc -->
+<path d="M19.8,9 Q24,10.2 28.2,9" fill="none" stroke="#44C8E0" stroke-width=".65" opacity=".75"/>
+<!-- Globe left meridian curve -->
+<path d="M24,0.7 Q20.2,6.5 24,12.3" fill="none" stroke="#44C8E0" stroke-width=".6" opacity=".6"/>
+<!-- Globe right meridian curve -->
+<path d="M24,0.7 Q27.8,6.5 24,12.3" fill="none" stroke="#44C8E0" stroke-width=".6" opacity=".6"/>
+</svg><div class="nav-logo-text"><span class="nav-logo-name">FINTEX GLOBAL GROUP</span><span class="nav-logo-sub">Secure Portal</span></div></a>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <a href="index.html" class="nav-link" style="font-size:12px;">← Back to Website</a>
+      <button id="logoutBtn" onclick="doLogout()" style="display:none;font-family:var(--font-h);font-size:12px;font-weight:600;padding:7px 14px;border-radius:7px;border:1px solid rgba(239,68,68,.3);background:transparent;color:#F87171;cursor:pointer;">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── LOGIN PAGE ── -->
+<div class="portal-page" id="loginPage">
+  <div class="portal-wrap">
+    <div class="portal-logo-row"><svg class="nav-logo-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="lga" x1="0%" y1="100%" x2="55%" y2="0%">
+    <stop offset="0%" stop-color="#0D2B55"/>
+    <stop offset="55%" stop-color="#1565A8"/>
+    <stop offset="100%" stop-color="#38B6CC"/>
+  </linearGradient>
+  <linearGradient id="lgb" x1="100%" y1="100%" x2="45%" y2="0%">
+    <stop offset="0%" stop-color="#0D2B55"/>
+    <stop offset="55%" stop-color="#1A5FA0"/>
+    <stop offset="100%" stop-color="#44C8E0"/>
+  </linearGradient>
+</defs>
+<!-- Left outer peak -->
+<polygon points="2,43 11,21 15,31 9,43" fill="url(#lga)" opacity=".88"/>
+<!-- Right outer peak -->
+<polygon points="46,43 37,21 33,31 39,43" fill="url(#lgb)" opacity=".88"/>
+<!-- Centre peak left face -->
+<polygon points="9,43 24,5 21,19 16,43" fill="url(#lga)"/>
+<!-- Centre peak right face -->
+<polygon points="39,43 24,5 27,19 32,43" fill="url(#lgb)"/>
+<!-- Centre inner depth cut -->
+<polygon points="21,19 24,5 27,19 24,29" fill="#081828" opacity=".75"/>
+<!-- Globe circle -->
+<circle cx="24" cy="6.5" r="5.8" fill="none" stroke="#44C8E0" stroke-width="1.05"/>
+<!-- Globe vertical axis -->
+<line x1="24" y1="0.7" x2="24" y2="12.3" stroke="#44C8E0" stroke-width=".8"/>
+<!-- Globe horizontal equator -->
+<line x1="18.2" y1="6.5" x2="29.8" y2="6.5" stroke="#44C8E0" stroke-width=".8"/>
+<!-- Globe upper latitude arc -->
+<path d="M19.8,4 Q24,2.8 28.2,4" fill="none" stroke="#44C8E0" stroke-width=".65" opacity=".75"/>
+<!-- Globe lower latitude arc -->
+<path d="M19.8,9 Q24,10.2 28.2,9" fill="none" stroke="#44C8E0" stroke-width=".65" opacity=".75"/>
+<!-- Globe left meridian curve -->
+<path d="M24,0.7 Q20.2,6.5 24,12.3" fill="none" stroke="#44C8E0" stroke-width=".6" opacity=".6"/>
+<!-- Globe right meridian curve -->
+<path d="M24,0.7 Q27.8,6.5 24,12.3" fill="none" stroke="#44C8E0" stroke-width=".6" opacity=".6"/>
+</svg>
+      <div><div class="portal-logo-name">FINTEX GLOBAL GROUP</div><div style="font-size:8px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;">Secure Portal</div></div>
+    </div>
+    <div class="portal-card">
+      <div class="portal-tabs">
+        <button class="portal-tab active" onclick="switchPortalTab('client')">👤 Client Portal</button>
+        <button class="portal-tab" onclick="switchPortalTab('admin')">🛡️ Admin Portal</button>
+      </div>
+
+      <!-- CLIENT LOGIN -->
+      <div class="portal-panel active" id="panel-client">
+        <div style="margin-bottom:18px;">
+          <div style="font-family:var(--font-h);font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Welcome Back</div>
+          <div style="font-size:.82rem;color:var(--muted);">Sign in to submit documents and track your engagement.</div>
+        </div>
+        <div><label class="p-label">Email Address</label><input class="p-input" type="email" id="c-email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')doClientLogin()"/></div>
+        <div><label class="p-label">Password</label><input class="p-input" type="password" id="c-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doClientLogin()"/></div>
+        <button class="p-btn" onclick="doClientLogin()">Sign In to Client Portal →</button>
+        <div class="p-err" id="c-err">Invalid email or password. Please try again.</div>
+        <div class="p-note">Need access? <a href="contact.html">Contact your account manager</a>.<br/>Your credentials are provided by Fintex Global Group.</div>
+      </div>
+
+      <!-- ADMIN LOGIN -->
+      <div class="portal-panel" id="panel-admin">
+        <div style="margin-bottom:18px;">
+          <div style="font-family:var(--font-h);font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:4px;">Admin Access</div>
+          <div style="font-size:.82rem;color:var(--muted);">Authorised Fintex team members only.</div>
+        </div>
+        <div><label class="p-label">Admin Email</label><input class="p-input" type="email" id="a-email" placeholder="admin@fintexglobal.com" onkeydown="if(event.key==='Enter')doAdminLogin()"/></div>
+        <div><label class="p-label">Password</label><input class="p-input" type="password" id="a-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()"/></div>
+        <button class="p-btn" style="background:linear-gradient(135deg,#1E4B7A,#2E86C1);" onclick="doAdminLogin()">Sign In to Admin Dashboard →</button>
+        <div class="p-err" id="a-err">Invalid admin credentials.</div>
+        <div class="p-note">Forgot your password? Contact Harish directly.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CLIENT DASHBOARD ── -->
+<div class="cdash" id="clientDash">
+  <div id="clientDashInner"></div>
+</div>
+
+<!-- ── ADMIN DASHBOARD ── -->
+<div class="adash" id="adminDash">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+    <div>
+      <div style="font-family:var(--font-h);font-size:1.2rem;font-weight:700;color:var(--white);" id="adminGreeting">Admin Dashboard</div>
+      <div style="font-size:.8rem;color:var(--muted);" id="adminEmail"></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="a-action-btn" onclick="exportCSV()" style="color:var(--cyan);border-color:var(--cyan);">⬇ Export CSV</button>
+    </div>
+  </div>
+  <div class="admin-nav">
+    <button class="admin-nav-btn active" onclick="adminSection('dashboard')">📊 Dashboard</button>
+    <button class="admin-nav-btn" onclick="adminSection('leads')">📩 Leads <span id="lead-badge" style="background:rgba(239,68,68,.8);color:#fff;font-size:9px;padding:1px 5px;border-radius:8px;margin-left:3px;display:none;">0</span></button>
+    <button class="admin-nav-btn" onclick="adminSection('clients')">👥 All Clients</button>
+    <button class="admin-nav-btn" onclick="adminSection('submissions')">📁 Submissions</button>
+    <button class="admin-nav-btn" onclick="adminSection('awaiting')">⏳ Awaiting</button>
+    <button class="admin-nav-btn" onclick="adminSection('credentials')">🔑 Credentials</button>
+  </div>
+
+  <!-- DASHBOARD SECTION -->
+  <div class="admin-section active" id="sec-dashboard">
+    <div class="a-stat-grid" id="statGrid"></div>
+    <div class="dash-card">
+      <div class="dash-card-title">Recent Activity</div>
+      <div id="recentActivity" style="font-size:.82rem;color:var(--muted-lt);"></div>
+    </div>
+  </div>
+
+  <!-- LEADS SECTION -->
+  <div class="admin-section" id="sec-leads">
+    <div class="dash-card">
+      <div class="dash-card-title">Contact Form Leads</div>
+      <div style="overflow-x:auto;"><table class="a-table" id="leadsTable"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Region</th><th>Service</th><th>Actions</th></tr></thead><tbody id="leadsTbody"></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- CLIENTS SECTION -->
+  <div class="admin-section" id="sec-clients">
+    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+      <input id="clientSearch" class="p-input" placeholder="Search clients..." style="max-width:280px;margin:0;" oninput="renderClients()"/>
+      <button class="a-action-btn" onclick="addClient()" style="color:var(--cyan);border-color:var(--cyan);">+ Add Client</button>
+    </div>
+    <div class="dash-card">
+      <div style="overflow-x:auto;"><table class="a-table"><thead><tr><th>Name</th><th>Email</th><th>Region</th><th>Status</th><th>Service</th><th>Actions</th></tr></thead><tbody id="clientsTbody"></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- SUBMISSIONS SECTION -->
+  <div class="admin-section" id="sec-submissions">
+    <div class="dash-card">
+      <div class="dash-card-title">Document Submissions</div>
+      <div id="submissionsList" style="font-size:.83rem;color:var(--muted-lt);"></div>
+    </div>
+  </div>
+
+  <!-- AWAITING SECTION -->
+  <div class="admin-section" id="sec-awaiting">
+    <div class="dash-card">
+      <div class="dash-card-title">Clients Awaiting Document Submission</div>
+      <div id="awaitingList" style="font-size:.83rem;color:var(--muted-lt);"></div>
+    </div>
+  </div>
+
+  <!-- CREDENTIALS SECTION -->
+  <div class="admin-section" id="sec-credentials">
+    <div class="dash-card">
+      <div class="dash-card-title">Manage Login Credentials</div>
+      <p style="font-size:.82rem;color:var(--muted-lt);margin-bottom:16px;">Add, edit or remove client and admin passwords. Changes take effect immediately.</p>
+      <div id="credsList"></div>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+        <input class="p-input" id="newCredEmail" placeholder="Email address" style="max-width:220px;margin:0;"/>
+        <input class="p-input" id="newCredPass" placeholder="Password" type="password" style="max-width:200px;margin:0;"/>
+        <select class="p-input" id="newCredRole" style="max-width:140px;margin:0;">
+          <option value="client">Client</option>
+          <option value="admin">Admin</option>
+        </select>
+        <button class="a-action-btn" onclick="addCredential()" style="color:var(--cyan);border-color:var(--cyan);">+ Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// STORAGE HELPER
+// ══════════════════════════════════════════════════
+var DB = {
+  get: function(k){try{return JSON.parse(localStorage.getItem('fintex_'+k)||'null');}catch(e){return null;}},
+  set: function(k,v){try{localStorage.setItem('fintex_'+k,JSON.stringify(v));}catch(e){}},
+  del: function(k){localStorage.removeItem('fintex_'+k);}
+};
+
+// ── DEFAULT CREDENTIALS (change via Credentials tab) ──
+function getCredentials(){
+  var c = DB.get('credentials');
+  if(!c) {
+    c = [
+      {email:'admin@fintexglobal.com', password:'FintexAdmin2024!', role:'admin', name:'Harish'},
+      {email:'arun@tensquare.com.au', password:'Arun2024!', role:'admin', name:'Arun'},
+      {email:'client@example.com', password:'Client123!', role:'client', name:'Demo Client', region:'AU', service:'BAS Preparation'},
+      {email:'priya@example.com', password:'Priya123!', role:'client', name:'Priya Sharma', region:'India', service:'GST Returns'}
+    ];
+    DB.set('credentials', c);
+  }
+  return c;
+}
+
+// ══════════════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════════════
+function switchPortalTab(t){
+  document.querySelectorAll('.portal-tab').forEach(function(b,i){b.classList.toggle('active',i===(t==='client'?0:1));});
+  document.getElementById('panel-client').classList.toggle('active', t==='client');
+  document.getElementById('panel-admin').classList.toggle('active', t==='admin');
+}
+
+function doClientLogin(){
+  var email = document.getElementById('c-email').value.trim().toLowerCase();
+  var pass  = document.getElementById('c-pass').value;
+  var creds = getCredentials();
+  var user  = creds.find(function(c){return c.email.toLowerCase()===email && c.password===pass && c.role==='client';});
+  if(!user){document.getElementById('c-err').style.display='block';return;}
+  document.getElementById('c-err').style.display='none';
+  DB.set('session', {role:'client', email:user.email, name:user.name, region:user.region||'', service:user.service||''});
+  showClientDash(user);
+}
+
+function doAdminLogin(){
+  var email = document.getElementById('a-email').value.trim().toLowerCase();
+  var pass  = document.getElementById('a-pass').value;
+  var creds = getCredentials();
+  var user  = creds.find(function(c){return c.email.toLowerCase()===email && c.password===pass && c.role==='admin';});
+  if(!user){document.getElementById('a-err').style.display='block';return;}
+  document.getElementById('a-err').style.display='none';
+  DB.set('session', {role:'admin', email:user.email, name:user.name});
+  showAdminDash(user);
+}
+
+function doLogout(){
+  DB.del('session');
+  document.getElementById('loginPage').style.display='flex';
+  document.getElementById('clientDash').style.display='none';
+  document.getElementById('adminDash').style.display='none';
+  document.getElementById('logoutBtn').style.display='none';
+}
+
+// Resume session on page load
+(function(){
+  var sess = DB.get('session');
+  if(!sess) return;
+  var creds = getCredentials();
+  var user = creds.find(function(c){return c.email.toLowerCase()===sess.email.toLowerCase();});
+  if(!user) return;
+  if(sess.role==='admin') showAdminDash(user);
+  else showClientDash(user);
+})();
+
+// ══════════════════════════════════════════════════
+// CLIENT DASHBOARD
+// ══════════════════════════════════════════════════
+function showClientDash(user){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('clientDash').style.display='block';
+  document.getElementById('logoutBtn').style.display='block';
+  
+  var data = DB.get('client_'+user.email) || {status:'pending', docs:[], notes:'', submitted:false};
+  var service = user.service || 'General';
+  var statusMap = {
+    pending: {cls:'pending', icon:'📋', text:'Ready for document submission.', detail:'Please upload the required documents below and complete the financial information form.'},
+    submitted: {cls:'submitted', icon:'✅', text:'Documents submitted — under review.', detail:'Your documents have been received. Our team will review and contact you within 2 business days.'},
+    frozen: {cls:'frozen', icon:'🔒', text:'Portal under review — submissions paused.', detail:'Your documents are currently under review. No further uploads are required at this time.'},
+    info_requested: {cls:'info', icon:'📌', text:'Additional information requested.', detail: (data.admin_note||'Please re-upload the requested documents and re-submit.')}
+  };
+  var st = statusMap[data.status] || statusMap['pending'];
+  var steps = ['Account','Submit','Review','Complete'];
+  var stepIdx = {pending:1, submitted:2, frozen:2, info_requested:1, complete:3}[data.status]||1;
+  
+  var stepsHtml = steps.map(function(s,i){
+    var cls = i<stepIdx?'done':(i===stepIdx?'active':'');
+    return '<div class="step '+cls+'"><div class="step-circle">'+(i<stepIdx?'✓':(i+1))+'</div><div class="step-label">'+s+'</div></div>';
+  }).join('');
+
+  var docTypes = {
+    'BAS Preparation':['Bank statements (last quarter)','Xero/MYOB file or CSV export','Sales invoices summary','Purchase invoices summary','Payroll summary (if applicable)'],
+    'Tax Returns (ITR)':['Payment summaries / income statements','Bank interest certificates','Rental income/expense records','Share trade records (if applicable)','Prior year tax return'],
+    'SMSF Compliance':['SMSF bank statements (full year)','Investment statements','Member contribution records','Trustee declarations','Prior year financial statements'],
+    'GST Returns':['Sales register (GSTR-1 data)','Purchase register (GSTR-2A/2B)','Bank statements','E-way bills (if applicable)'],
+    'UAE VAT':['Sales invoices (quarter)','Purchase invoices (quarter)','Bank statements','Emirates ID / Trade license copy'],
+    'Corporate Tax':['Audited financial statements','Trial balance','Fixed asset register','Directors' report'],
+    'Bookkeeping':['Bank statements (all accounts)','Credit card statements','Sales invoices','Expense receipts'],
+  };
+  var docs = docTypes[service] || ['Financial statements','Bank statements','Supporting documents','Prior year returns'];
+  var docsHtml = docs.map(function(d){
+    return '<div class="doc-item"><div class="doc-check '+(data.docs&&data.docs.indexOf(d)>=0?'done':'')+'">✓</div><div style="font-size:.83rem;color:var(--muted-lt);">'+d+'</div></div>';
+  }).join('');
+
+  var locked = data.status==='submitted' || data.status==='frozen';
+  
+  document.getElementById('clientDashInner').innerHTML = `
+<div class="step-bar">${stepsHtml}</div>
+<div class="status-banner ${st.cls}">
+  <div style="font-size:22px;flex-shrink:0;">${st.icon}</div>
+  <div><div style="font-family:var(--font-h);font-size:.88rem;font-weight:600;color:var(--white);margin-bottom:3px;">${st.text}</div>
+  <div style="font-size:.8rem;color:var(--muted-lt);">${st.detail}</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1.3fr;gap:18px;align-items:start;">
+  <div>
+    <div style="font-family:var(--font-h);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Required Documents — ${service}</div>
+    <div class="doc-checklist">${docsHtml}</div>
+    ${!locked?`
+    <div class="upload-zone" id="dropzone" onclick="document.getElementById('fileInput').click()" ondragover="this.classList.add('dragover');event.preventDefault();" ondragleave="this.classList.remove('dragover');" ondrop="handleDrop(event)">
+      <div style="font-size:28px;margin-bottom:8px;">📁</div>
+      <div style="font-family:var(--font-h);font-size:.85rem;font-weight:600;color:var(--white);margin-bottom:4px;">Drop files here or click to upload</div>
+      <div style="font-size:.75rem;color:var(--muted);">PDF, Excel, Word, Images, ZIP — max 20MB each</div>
+      <input type="file" id="fileInput" multiple style="display:none" onchange="handleFiles(this.files)" accept=".pdf,.xlsx,.xls,.doc,.docx,.png,.jpg,.jpeg,.zip"/>
+    </div>
+    <div id="uploadedFiles" style="margin-top:10px;"></div>`:''}
+  </div>
+  <div>
+    <div style="font-family:var(--font-h);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Financial Information</div>
+    <div class="dash-card">
+      ${!locked?`
+      <div style="display:grid;gap:10px;">
+        <div><label class="p-label">Period / Financial Year</label><input class="p-input" id="fi-period" placeholder="e.g. Q1 2025 or FY 2024-25" style="margin:0;" value="${data.fi_period||''}"/></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div><label class="p-label">Revenue (approx.)</label><input class="p-input" id="fi-rev" placeholder="e.g. AUD 250,000" style="margin:0;" value="${data.fi_revenue||''}"/></div>
+          <div><label class="p-label">Employees</label><input class="p-input" id="fi-emp" placeholder="e.g. 5" style="margin:0;" value="${data.fi_employees||''}"/></div>
+        </div>
+        <div><label class="p-label">ABN / TFN / TRN / PAN (as applicable)</label><input class="p-input" id="fi-id" placeholder="Tax identification number" style="margin:0;" value="${data.fi_id||''}"/></div>
+        <div><label class="p-label">Business Address</label><input class="p-input" id="fi-addr" placeholder="Registered business address" style="margin:0;" value="${data.fi_address||''}"/></div>
+        <div><label class="p-label">Additional Notes</label><textarea class="p-input" id="fi-notes" rows="3" placeholder="Any special instructions or notes..." style="margin:0;resize:vertical;">${data.fi_notes||''}</textarea></div>
+        <div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:rgba(0,180,216,.04);border:1px solid var(--border);border-radius:8px;">
+          <input type="checkbox" id="decl" style="margin-top:2px;"/>
+          <label for="decl" style="font-size:.78rem;color:var(--muted-lt);cursor:pointer;">I declare that the information and documents provided are accurate, complete and to the best of my knowledge.</label>
+        </div>
+        <button class="p-btn" onclick="submitPortal('${user.email}')">Submit Documents →</button>
+      </div>`:`<div style="text-align:center;padding:20px;font-size:.83rem;color:var(--muted-lt);">${data.status==='frozen'?'🔒 Portal locked during review. Contact your account manager if you have questions.':'✅ Information submitted successfully.'}</div>`}
+    </div>
+    <div style="margin-top:14px;padding:14px 16px;background:var(--grad-card);border:1px solid var(--border);border-radius:10px;">
+      <div style="font-family:var(--font-h);font-size:.8rem;font-weight:600;color:var(--white);margin-bottom:8px;">Need Help?</div>
+      <div style="font-size:.78rem;color:var(--muted-lt);margin-bottom:10px;">Contact your account manager directly.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="mailto:info@fintexglobal.com" class="btn btn-outline btn-sm">✉️ Email Us</a>
+        <a href="https://wa.me/971557282794?text=Hi%20Fintex%2C%20I%20need%20help%20with%20my%20portal." target="_blank" rel="noopener" class="btn btn-wa btn-sm">💬 WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>`;
+  
+  // File count
+  window._uploadedFileNames = data.docs || [];
+  renderUploadedFiles();
+}
+
+function renderUploadedFiles(){
+  var el = document.getElementById('uploadedFiles');
+  if(!el) return;
+  if(!window._uploadedFileNames.length){el.innerHTML='';return;}
+  el.innerHTML = '<div style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">Uploaded Files</div>' +
+    window._uploadedFileNames.map(function(n){return '<div style="display:flex;align-items:center;gap:7px;padding:6px 10px;background:rgba(0,180,216,.05);border:1px solid var(--border);border-radius:6px;margin-bottom:4px;font-size:.78rem;color:var(--muted-lt);">📄 '+n+'</div>';}).join('');
+}
+function handleFiles(files){
+  Array.from(files).forEach(function(f){
+    if(f.size>20*1024*1024){alert(f.name+' exceeds 20MB limit.');return;}
+    if(window._uploadedFileNames.indexOf(f.name)<0) window._uploadedFileNames.push(f.name);
+  });
+  renderUploadedFiles();
+}
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('dropzone').classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+}
+function submitPortal(email){
+  if(!document.getElementById('decl') || !document.getElementById('decl').checked){
+    alert('Please check the declaration box before submitting.');return;
+  }
+  var data = DB.get('client_'+email) || {};
+  data.status = 'submitted';
+  data.docs = window._uploadedFileNames || [];
+  data.fi_period = (document.getElementById('fi-period')||{}).value || '';
+  data.fi_revenue = (document.getElementById('fi-rev')||{}).value || '';
+  data.fi_employees = (document.getElementById('fi-emp')||{}).value || '';
+  data.fi_id = (document.getElementById('fi-id')||{}).value || '';
+  data.fi_address = (document.getElementById('fi-addr')||{}).value || '';
+  data.fi_notes = (document.getElementById('fi-notes')||{}).value || '';
+  data.submitted_at = new Date().toISOString();
+  DB.set('client_'+email, data);
+  // Save to analytics leads
+  try{var k='fintex_analytics',an=JSON.parse(localStorage.getItem(k)||'{}');if(!an.submissions)an.submissions=[];an.submissions.push({email:email,date:data.submitted_at});localStorage.setItem(k,JSON.stringify(an));}catch(x){}
+  var sess = DB.get('session');
+  var creds = getCredentials();
+  var user = creds.find(function(c){return c.email.toLowerCase()===email.toLowerCase();});
+  if(user) showClientDash(user);
+}
+
+// ══════════════════════════════════════════════════
+// ADMIN DASHBOARD
+// ══════════════════════════════════════════════════
+function showAdminDash(user){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('adminDash').style.display='block';
+  document.getElementById('logoutBtn').style.display='block';
+  document.getElementById('adminGreeting').textContent = 'Welcome, '+user.name;
+  document.getElementById('adminEmail').textContent = user.email;
+  adminSection('dashboard');
+  renderStats();
+  renderLeads();
+  renderClients();
+  renderCredentials();
+}
+
+function adminSection(s){
+  document.querySelectorAll('.admin-section').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.admin-nav-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('sec-'+s).classList.add('active');
+  event && event.target && event.target.classList && event.target.classList.add('active');
+  if(s==='submissions') renderSubmissions();
+  if(s==='awaiting') renderAwaiting();
+  if(s==='credentials') renderCredentials();
+}
+
+function renderStats(){
+  var creds = getCredentials();
+  var clients = creds.filter(function(c){return c.role==='client';});
+  var an = JSON.parse(localStorage.getItem('fintex_analytics')||'{}');
+  var leads = (an.leads||[]).length;
+  var submitted = 0, awaiting = 0, frozen = 0, infoReq = 0;
+  clients.forEach(function(c){
+    var d = DB.get('client_'+c.email);
+    if(!d||d.status==='pending') awaiting++;
+    else if(d.status==='submitted') submitted++;
+    else if(d.status==='frozen') frozen++;
+    else if(d.status==='info_requested') infoReq++;
+  });
+  var stats = [
+    {n:clients.length, l:'Total Clients', c:'var(--cyan)'},
+    {n:submitted, l:'Submitted', c:'#34D399'},
+    {n:awaiting, l:'Awaiting Docs', c:'#E8B800'},
+    {n:leads, l:'Form Leads', c:'var(--in-saffron)'},
+    {n:frozen, l:'Under Review', c:'#F87171'},
+    {n:infoReq, l:'Info Requested', c:'#A78BFA'},
+  ];
+  document.getElementById('statGrid').innerHTML = stats.map(function(s){
+    return '<div class="a-stat"><div class="a-stat-num" style="color:'+s.c+'">'+s.n+'</div><div class="a-stat-lbl">'+s.l+'</div></div>';
+  }).join('');
+  var an2 = JSON.parse(localStorage.getItem('fintex_analytics')||'{}');
+  var recent = (an2.visits||[]).slice(-8).reverse().map(function(v){
+    return '<div style="padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:10px;"><span style="color:var(--muted);min-width:100px;font-size:.75rem;">'+v.date+'</span><span>'+v.page+'</span></div>';
+  }).join('');
+  document.getElementById('recentActivity').innerHTML = recent || '<span style="color:var(--muted);">No activity yet.</span>';
+  // Lead badge
+  var unread = (an.leads||[]).filter(function(l){return !l.read;}).length;
+  var badge = document.getElementById('lead-badge');
+  badge.textContent = unread;
+  badge.style.display = unread>0?'inline':'none';
+}
+
+function renderLeads(){
+  var an = JSON.parse(localStorage.getItem('fintex_analytics')||'{}');
+  var leads = (an.leads||[]).slice().reverse();
+  document.getElementById('leadsTbody').innerHTML = leads.length===0
+    ? '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">No leads yet.</td></tr>'
+    : leads.map(function(l,i){
+      return '<tr><td style="white-space:nowrap;">'+((l.timestamp||'').substring(0,10)||'—')+'</td><td>'+escH(l.firstName||'')+(l.lastName?' '+escH(l.lastName):'')+'</td><td>'+escH(l.email||'—')+'</td><td>'+escH(l.region||'—')+'</td><td>'+escH(l.service||'—')+'</td><td><a href="mailto:'+escH(l.email||'')+'" class="a-action-btn">✉️ Email</a>'+(l.phone?'<a href="https://wa.me/'+escH(l.phone.replace(/\D/g,''))+'?text=Hi%20there" target="_blank" rel="noopener" class="a-action-btn">💬 WA</a>':'')+'</td></tr>';
+    }).join('');
+}
+
+function renderClients(){
+  var creds = getCredentials();
+  var search = (document.getElementById('clientSearch')||{value:''}).value.toLowerCase();
+  var clients = creds.filter(function(c){return c.role==='client' && (!search||(c.email+c.name).toLowerCase().indexOf(search)>=0);});
+  document.getElementById('clientsTbody').innerHTML = clients.length===0
+    ? '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">No clients yet.</td></tr>'
+    : clients.map(function(c){
+      var d = DB.get('client_'+c.email) || {status:'pending'};
+      var badges = {submitted:'submitted',pending:'pending',frozen:'frozen',info_requested:'info'};
+      var badge = badges[d.status]||'pending';
+      return '<tr><td>'+escH(c.name||'')+'</td><td>'+escH(c.email)+'</td><td>'+escH(c.region||'—')+'</td><td><span class="a-badge '+badge+'">'+escH(d.status||'pending')+'</span></td><td>'+escH(c.service||'—')+'</td><td>'
+        +'<button class="a-action-btn" onclick="freezeClient(''+escH(c.email)+'')">'+( d.status==='frozen'?'🔓 Unlock':'🔒 Freeze')+'</button>'
+        +'<button class="a-action-btn" onclick="requestInfo(''+escH(c.email)+'')">📌 Req. Info</button>'
+        +'<button class="a-action-btn" onclick="deleteClient(''+escH(c.email)+'')">🗑</button>'
+        +'</td></tr>';
+    }).join('');
+}
+
+function renderSubmissions(){
+  var creds = getCredentials();
+  var html = '';
+  creds.filter(function(c){return c.role==='client';}).forEach(function(c){
+    var d = DB.get('client_'+c.email);
+    if(!d||d.status==='pending') return;
+    html += '<div style="padding:14px 0;border-bottom:1px solid rgba(255,255,255,.04);">'
+      +'<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;">'
+      +'<span style="font-weight:600;color:var(--white);">'+escH(c.name)+'</span>'
+      +'<span style="color:var(--muted);font-size:.78rem;">'+escH(c.email)+'</span>'
+      +'<span class="a-badge '+(d.status==='submitted'?'submitted':d.status==='frozen'?'frozen':'info')+'">'+d.status+'</span>'
+      +'</div>'
+      +'<div style="font-size:.78rem;color:var(--muted);">Submitted: '+(d.submitted_at||'—').substring(0,16)+'</div>'
+      +'<div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">'
+      +(d.docs||[]).map(function(f){return '<span style="background:rgba(0,180,216,.05);border:1px solid var(--border);border-radius:5px;padding:2px 8px;font-size:.73rem;color:var(--muted-lt);">📄 '+escH(f)+'</span>';}).join('')
+      +'</div></div>';
+  });
+  document.getElementById('submissionsList').innerHTML = html || '<span style="color:var(--muted);">No submissions yet.</span>';
+}
+
+function renderAwaiting(){
+  var creds = getCredentials();
+  var html = '';
+  creds.filter(function(c){return c.role==='client';}).forEach(function(c){
+    var d = DB.get('client_'+c.email);
+    if(d && d.status!=='pending' && d.status!=='info_requested') return;
+    html += '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);">'
+      +'<div style="flex:1;min-width:160px;"><div style="font-weight:600;color:var(--white);font-size:.85rem;">'+escH(c.name)+'</div><div style="font-size:.75rem;color:var(--muted);">'+escH(c.email)+'</div></div>'
+      +'<a href="https://wa.me/'+((c.phone||'').replace(/\D/g,''))+'?text=Hi%20'+encodeURIComponent(c.name||'')+'%2C%20please%20submit%20your%20documents%20via%20the%20Fintex%20portal." target="_blank" rel="noopener" class="a-action-btn">💬 WhatsApp</a>'
+      +'<button class="a-action-btn" onclick="requestInfo(''+escH(c.email)+'')">📌 Request Info</button>'
+      +'</div>';
+  });
+  document.getElementById('awaitingList').innerHTML = html || '<span style="color:var(--muted);">All clients have submitted — great!</span>';
+}
+
+function renderCredentials(){
+  var creds = getCredentials();
+  document.getElementById('credsList').innerHTML = creds.map(function(c,i){
+    return '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);">'
+      +'<span style="min-width:160px;font-size:.82rem;color:var(--white);">'+escH(c.email)+'</span>'
+      +'<span style="font-size:.75rem;background:rgba(0,180,216,.07);color:var(--cyan);padding:2px 8px;border-radius:10px;">'+c.role+'</span>'
+      +'<span style="font-size:.75rem;color:var(--muted);">'+escH(c.name||'')+'</span>'
+      +'<button class="a-action-btn" onclick="resetCred('+i+')">🔄 Reset</button>'
+      +(i>=2?'<button class="a-action-btn" onclick="deleteCred('+i+')">🗑</button>':'')
+      +'</div>';
+  }).join('');
+}
+
+// Admin actions
+function freezeClient(email){
+  var d = DB.get('client_'+email) || {status:'pending'};
+  d.status = d.status==='frozen' ? 'pending' : 'frozen';
+  DB.set('client_'+email, d);
+  renderClients();
+}
+function requestInfo(email){
+  var note = prompt('Enter message for client (what info/docs are needed):','Please resubmit with the following documents:');
+  if(note===null) return;
+  var d = DB.get('client_'+email) || {};
+  d.status = 'info_requested';
+  d.admin_note = note;
+  DB.set('client_'+email, d);
+  renderClients();
+}
+function addClient(){
+  var email = prompt('Client email:');
+  if(!email) return;
+  var name = prompt('Client name:');
+  if(!name) return;
+  var pass = prompt('Temporary password:');
+  if(!pass) return;
+  var region = prompt('Region (AU / India / UAE):') || '';
+  var service = prompt('Service assigned:') || '';
+  var creds = getCredentials();
+  creds.push({email:email.trim(), password:pass, role:'client', name:name, region:region, service:service});
+  DB.set('credentials', creds);
+  renderClients();
+  renderCredentials();
+}
+function deleteClient(email){
+  if(!confirm('Delete client '+email+'?')) return;
+  var creds = getCredentials().filter(function(c){return c.email!==email;});
+  DB.set('credentials', creds);
+  DB.del('client_'+email);
+  renderClients();
+}
+function addCredential(){
+  var email = document.getElementById('newCredEmail').value.trim();
+  var pass  = document.getElementById('newCredPass').value;
+  var role  = document.getElementById('newCredRole').value;
+  if(!email||!pass){alert('Email and password required.');return;}
+  var creds = getCredentials();
+  var existing = creds.findIndex(function(c){return c.email.toLowerCase()===email.toLowerCase();});
+  if(existing>=0){creds[existing].password=pass;creds[existing].role=role;}
+  else creds.push({email:email, password:pass, role:role, name:email.split('@')[0]});
+  DB.set('credentials', creds);
+  document.getElementById('newCredEmail').value='';
+  document.getElementById('newCredPass').value='';
+  renderCredentials();
+  alert('Credential saved.');
+}
+function resetCred(i){
+  var np = prompt('Enter new password:');
+  if(!np) return;
+  var creds = getCredentials();
+  creds[i].password = np;
+  DB.set('credentials', creds);
+  renderCredentials();
+  alert('Password updated.');
+}
+function deleteCred(i){
+  var creds = getCredentials();
+  if(!confirm('Remove '+creds[i].email+'?')) return;
+  creds.splice(i,1);
+  DB.set('credentials', creds);
+  renderCredentials();
+}
+function exportCSV(){
+  var an = JSON.parse(localStorage.getItem('fintex_analytics')||'{}');
+  var leads = an.leads || [];
+  if(!leads.length){alert('No leads to export.');return;}
+  var rows = [['Date','First Name','Last Name','Email','Phone','Region','Service','Message']];
+  leads.forEach(function(l){rows.push([(l.timestamp||'').substring(0,10),l.firstName||'',l.lastName||'',l.email||'',l.phone||'',l.region||'',l.service||'',l.message||'']);});
+  var csv = rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='fintex-leads.csv';a.click();
+}
+function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+window.addEventListener('scroll',function(){document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>20);});
+(function(){try{var k='fintex_analytics',d=JSON.parse(localStorage.getItem(k)||'{}'),t=new Date().toISOString().split('T')[0];if(!d.pageviews)d.pageviews={};d.pageviews['portal.html']=(d.pageviews['portal.html']||0)+1;localStorage.setItem(k,JSON.stringify(d));}catch(e){}})();
+</script>
+</body></html>
