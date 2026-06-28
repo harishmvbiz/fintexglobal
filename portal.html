@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#0B1829"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>Fintex Global — Practice Portal</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><linearGradient id='a' x1='0' y1='1' x2='.6' y2='0'><stop offset='0' stop-color='%230E3463'/><stop offset='1' stop-color='%234FD0EC'/></linearGradient></defs><polygon points='9,45 17,22 20,30 13,45' fill='url(%23a)'/><polygon points='22,45 24,24 26,24 26,45' fill='url(%23a)'/><polygon points='39,45 31,22 28,30 35,45' fill='url(%23a)'/><polygon points='20,30 24,24 22,45 20,45' fill='url(%23a)'/><polygon points='28,30 24,24 26,45 28,45' fill='url(%23a)'/><circle cx='24' cy='11' r='8' fill='none' stroke='%234FD0EC' stroke-width='1.6'/><ellipse cx='24' cy='11' rx='3.1' ry='8' fill='none' stroke='%234FD0EC' stroke-width='1.4'/><line x1='24' y1='3' x2='24' y2='19' stroke='%234FD0EC' stroke-width='1.2'/></svg>"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<!-- Export engines (PDF / XLSX). CSV works even if these fail to load. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+<style>
+.logo-svg{width:34px;height:34px;flex-shrink:0;filter:drop-shadow(0 0 10px rgba(0,180,216,.35));}
+.pnav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:center;justify-content:space-between;
+  padding:12px clamp(14px,3vw,26px);
+  background:linear-gradient(180deg,rgba(11,24,41,.66),rgba(11,24,41,.40));
+  -webkit-backdrop-filter:saturate(170%) blur(26px);backdrop-filter:saturate(170%) blur(26px);
+  border-bottom:1px solid var(--glass-stroke);box-shadow:var(--glass-hi);}
+.pnav-brand{display:flex;align-items:center;gap:11px;}
+.pnav-name{font-weight:800;letter-spacing:.5px;color:#fff;font-size:15px;line-height:1;}
+.pnav-sub{font-size:10px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;}
+.pnav-right{display:flex;align-items:center;gap:10px;}
+.pill-role{font-size:10.5px;font-weight:700;letter-spacing:.5px;padding:5px 11px;border-radius:30px;
+  background:rgba(0,180,216,.14);border:1px solid var(--glass-stroke-hi);color:var(--cyan-lt);}
+.btn-out{font-size:12px;font-weight:600;padding:8px 15px;border-radius:9px;cursor:pointer;
+  background:rgba(255,255,255,.05);border:1px solid var(--glass-stroke-hi);color:#F87171;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);}
+.btn-out:hover{background:rgba(239,68,68,.12);}
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:90px 18px 40px;}
+.auth-card{width:100%;max-width:440px;background:var(--glass-bg-strong);
+  -webkit-backdrop-filter:var(--glass-blur-lg);backdrop-filter:var(--glass-blur-lg);
+  border:1px solid var(--glass-stroke-hi);border-radius:26px;padding:clamp(26px,4vw,38px);
+  box-shadow:var(--glass-hi),0 30px 80px -20px rgba(0,0,0,.7);}
+.auth-logo{width:62px;height:62px;margin:0 auto 14px;display:block;filter:drop-shadow(0 0 16px rgba(0,180,216,.4));}
+.auth-title{text-align:center;font-size:1.35rem;font-weight:800;color:#fff;margin-bottom:4px;}
+.auth-sub{text-align:center;font-size:.82rem;color:var(--muted-lt);margin-bottom:22px;}
+.seg{display:flex;gap:6px;background:rgba(0,0,0,.25);border:1px solid var(--glass-stroke);
+  border-radius:14px;padding:5px;margin-bottom:20px;}
+.seg-btn{flex:1;padding:10px;border-radius:10px;border:none;background:transparent;color:var(--muted);
+  font-weight:700;font-size:12.5px;cursor:pointer;transition:var(--tr);font-family:var(--font-h);}
+.seg-btn.active{background:var(--grad-main);color:#fff;box-shadow:0 4px 16px -4px rgba(0,180,216,.5);}
+.f-pane{display:none;flex-direction:column;gap:14px;}
+.f-pane.active{display:flex;}
+.lab{font-size:11.5px;font-weight:600;color:var(--muted-lt);margin-bottom:6px;display:block;letter-spacing:.3px;}
+.inp{width:100%;padding:12px 14px;border-radius:11px;font-size:14px;font-family:inherit;
+  background:rgba(0,0,0,.28);border:1px solid var(--glass-stroke);color:#fff;outline:none;transition:var(--tr);}
+.inp:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,180,216,.15);}
+textarea.inp{resize:vertical;min-height:74px;}
+select.inp{cursor:pointer;}
+.btn-go{width:100%;padding:13px;border-radius:12px;border:none;cursor:pointer;font-weight:700;font-size:14px;
+  font-family:var(--font-h);background:var(--grad-main);color:#fff;
+  box-shadow:var(--glass-hi),0 8px 24px -6px rgba(0,180,216,.5);transition:var(--tr);}
+.btn-go:hover{transform:translateY(-2px);}
+.err{display:none;font-size:12px;color:#FCA5A5;background:rgba(239,68,68,.1);
+  border:1px solid rgba(239,68,68,.3);border-radius:9px;padding:9px 12px;}
+.hint{font-size:11px;color:var(--muted);text-align:center;margin-top:6px;}
+.app{display:none;padding-top:62px;}
+.app.show{display:block;}
+.shell{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 62px);}
+.side{background:linear-gradient(180deg,rgba(13,28,48,.55),rgba(9,20,36,.45));
+  -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  border-right:1px solid var(--glass-stroke);padding:18px 12px;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;}
+.side-grp{font-size:9.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);
+  margin:14px 10px 7px;font-weight:700;}
+.snav{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 12px;border-radius:11px;
+  border:none;background:transparent;color:var(--muted-lt);font-size:13px;font-weight:500;cursor:pointer;
+  font-family:inherit;transition:var(--tr);margin-bottom:2px;}
+.snav:hover{background:rgba(255,255,255,.05);color:#fff;}
+.snav.active{background:rgba(0,180,216,.14);color:#fff;border:1px solid var(--glass-stroke-hi);box-shadow:var(--glass-hi);}
+.snav .ic{width:18px;text-align:center;}
+.snav .bdg{margin-left:auto;font-size:9px;font-weight:700;background:#EF4444;color:#fff;border-radius:9px;padding:1px 6px;min-width:16px;text-align:center;}
+.main{padding:clamp(18px,3vw,30px);max-width:1180px;}
+.sec{display:none;animation:fade .3s ease;}
+.sec.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:20px;}
+.ph-t{font-size:1.45rem;font-weight:800;color:#fff;}
+.ph-s{font-size:.82rem;color:var(--muted-lt);margin-top:3px;max-width:560px;}
+.ph-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.panel{background:var(--glass-bg);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-stroke);border-radius:18px;padding:18px;box-shadow:var(--glass-hi),var(--glass-shadow);margin-bottom:16px;}
+.panel-t{font-size:.95rem;font-weight:700;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:8px;justify-content:space-between;}
+.ab{font-size:12px;font-weight:600;padding:8px 13px;border-radius:9px;cursor:pointer;font-family:inherit;
+  background:rgba(255,255,255,.05);border:1px solid var(--glass-stroke-hi);color:var(--cyan-lt);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:var(--tr);white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.ab:hover{background:rgba(0,180,216,.12);transform:translateY(-1px);}
+.ab.green{color:#34D399;}.ab.purple{color:#A78BFA;}.ab.red{color:#F87171;}.ab.amber{color:#FBBF24;}
+.ab[disabled]{opacity:.35;cursor:not-allowed;transform:none;}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px;margin-bottom:18px;}
+.kpi{background:var(--glass-bg);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-stroke);border-radius:16px;padding:16px 18px;box-shadow:var(--glass-hi),var(--glass-shadow);}
+.kpi-n{font-size:1.9rem;font-weight:800;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.kpi-l{font-size:.74rem;color:var(--muted);margin-top:2px;}
+.tbl-wrap{overflow-x:auto;border-radius:14px;}
+table.t{width:100%;border-collapse:collapse;font-size:.8rem;min-width:560px;}
+table.t th{text-align:left;padding:11px 12px;color:var(--cyan-lt);font-weight:700;font-size:.72rem;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--glass-stroke);}
+table.t td{padding:11px 12px;border-bottom:1px solid rgba(150,205,240,.08);color:var(--off-white);vertical-align:middle;}
+table.t tr:hover td{background:rgba(255,255,255,.03);}
+.tag{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;display:inline-block;}
+.tag.au{background:rgba(232,184,0,.14);color:#E8B800;}
+.tag.in{background:rgba(224,123,0,.14);color:#E07B00;}
+.tag.uae{background:rgba(0,180,216,.14);color:#48CAE4;}
+.tag.ok{background:rgba(52,211,153,.14);color:#34D399;}
+.tag.warn{background:rgba(251,191,36,.14);color:#FBBF24;}
+.tag.off{background:rgba(239,68,68,.14);color:#F87171;}
+.tag.muted{background:rgba(150,205,240,.1);color:var(--muted-lt);}
+.row-acts{display:flex;gap:6px;flex-wrap:wrap;}
+.mini{font-size:11px;padding:5px 9px;border-radius:8px;border:1px solid var(--glass-stroke);background:rgba(255,255,255,.04);color:var(--muted-lt);cursor:pointer;font-family:inherit;}
+.mini:hover{background:rgba(0,180,216,.1);color:#fff;}
+.mini.red:hover{background:rgba(239,68,68,.14);color:#FCA5A5;}
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;align-items:start;}
+.kcol{background:rgba(0,0,0,.18);border:1px solid var(--glass-stroke);border-radius:16px;padding:12px;min-height:120px;}
+.kcol.drag{border-color:var(--cyan);background:rgba(0,180,216,.06);}
+.kcol-h{display:flex;align-items:center;justify-content:space-between;font-size:.78rem;font-weight:700;color:#fff;margin-bottom:10px;}
+.kcol-h .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
+.kcount{font-size:10px;color:var(--muted);background:rgba(255,255,255,.06);border-radius:8px;padding:1px 7px;}
+.kcard{background:var(--glass-bg-strong);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border:1px solid var(--glass-stroke);border-radius:12px;padding:11px 12px;margin-bottom:9px;cursor:grab;box-shadow:var(--glass-hi);}
+.kcard:active{cursor:grabbing;}
+.kcard-t{font-size:.82rem;font-weight:600;color:#fff;margin-bottom:5px;}
+.kcard-m{font-size:.71rem;color:var(--muted-lt);display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.prio{font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;}
+.prio.high{background:rgba(239,68,68,.16);color:#F87171;}
+.prio.med{background:rgba(251,191,36,.16);color:#FBBF24;}
+.prio.low{background:rgba(52,211,153,.16);color:#34D399;}
+.modal-bg{display:none;position:fixed;inset:0;z-index:200;background:rgba(4,10,20,.6);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:18px;}
+.modal-bg.show{display:flex;}
+.modal{width:100%;max-width:560px;max-height:88vh;overflow-y:auto;background:var(--glass-bg-strong);
+  -webkit-backdrop-filter:var(--glass-blur-lg);backdrop-filter:var(--glass-blur-lg);
+  border:1px solid var(--glass-stroke-hi);border-radius:22px;padding:24px;box-shadow:var(--glass-hi),0 40px 100px -20px rgba(0,0,0,.7);}
+.modal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.modal-h .x{cursor:pointer;font-size:22px;color:var(--muted);line-height:1;background:none;border:none;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fld{margin-bottom:12px;}
+.note{font-size:.78rem;color:var(--muted-lt);line-height:1.6;background:rgba(0,180,216,.05);border:1px solid var(--glass-stroke);border-radius:10px;padding:11px 13px;}
+.chk{display:flex;align-items:flex-start;gap:9px;font-size:.8rem;color:var(--off-white);padding:8px 0;border-bottom:1px solid rgba(150,205,240,.07);}
+.chk input{margin-top:3px;width:16px;height:16px;accent-color:var(--cyan);flex-shrink:0;}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);z-index:300;
+  background:var(--glass-bg-strong);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  border:1px solid var(--glass-stroke-hi);border-radius:13px;padding:12px 20px;color:#fff;font-size:.83rem;font-weight:600;
+  box-shadow:var(--glass-hi),0 20px 50px -12px rgba(0,0,0,.6);opacity:0;transition:.35s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.bell{position:relative;background:rgba(120,180,225,.10);border:1px solid rgba(120,180,225,.18);
+  width:38px;height:38px;border-radius:10px;font-size:17px;cursor:pointer;color:#cfe2f2;
+  display:inline-flex;align-items:center;justify-content:center;transition:all .2s;}
+.bell:hover{background:rgba(0,180,216,.18);}
+.bell-dot{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 4px;
+  background:#E5484D;color:#fff;border-radius:9px;font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;line-height:1;border:2px solid #0B1829;}
+.empty{text-align:center;padding:34px 18px;color:var(--muted);font-size:.85rem;}
+.bar{height:7px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px;}
+.bar>i{display:block;height:100%;background:var(--grad-blue);border-radius:6px;}
+.dz{border:1.6px dashed var(--glass-stroke-hi);border-radius:14px;padding:26px;text-align:center;color:var(--muted-lt);cursor:pointer;background:rgba(0,0,0,.15);transition:var(--tr);}
+.dz:hover,.dz.over{border-color:var(--cyan);background:rgba(0,180,216,.07);color:#fff;}
+.step-track{display:flex;gap:0;margin:16px 0;}
+.stp{flex:1;text-align:center;position:relative;}
+.stp .c{width:34px;height:34px;border-radius:50%;margin:0 auto 7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;background:rgba(255,255,255,.06);border:1px solid var(--glass-stroke);color:var(--muted);}
+.stp.done .c{background:var(--grad-main);color:#fff;border-color:transparent;}
+.stp .l{font-size:.7rem;color:var(--muted);}
+.stp.done .l{color:var(--cyan-lt);}
+.stp::after{content:"";position:absolute;top:17px;left:50%;width:100%;height:2px;background:rgba(255,255,255,.08);z-index:-1;}
+.stp:last-child::after{display:none;}
+.stp.done::after{background:var(--cyan);}
+.cfg-code{background:rgba(0,0,0,.4);border:1px solid var(--glass-stroke);border-radius:8px;padding:12px;font-family:monospace;font-size:.7rem;color:#94D82D;overflow-x:auto;white-space:pre;line-height:1.5;}
+@media(max-width:860px){
+  .shell{grid-template-columns:1fr;}
+  .side{position:fixed;left:0;top:62px;bottom:0;width:236px;z-index:80;transform:translateX(-110%);transition:.3s;}
+  .side.open{transform:none;}
+  .menu-btn{display:inline-flex !important;}
+  .kanban{grid-template-columns:1fr 1fr;}
+  .grid2{grid-template-columns:1fr;}
+}
+@media(max-width:560px){.kanban{grid-template-columns:1fr;}}
+.menu-btn{display:none;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--glass-stroke-hi);color:#fff;font-size:18px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<nav class="pnav">
+  <div class="pnav-brand">
+    <button class="menu-btn" id="menuBtn" onclick="document.getElementById('side').classList.toggle('open')">☰</button>
+    <svg class="logo-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pL" x1="0%" y1="100%" x2="60%" y2="0%"><stop offset="0%" stop-color="#0E3463"/><stop offset="55%" stop-color="#1E6FB8"/><stop offset="100%" stop-color="#4FD0EC"/></linearGradient><linearGradient id="pG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9BE8FB"/><stop offset="100%" stop-color="#39B6E6"/></linearGradient></defs><polygon points="9,45 17,22 20,30 13,45" fill="url(#pL)"/><polygon points="22,45 24,24 26,24 26,45" fill="url(#pL)"/><polygon points="39,45 31,22 28,30 35,45" fill="url(#pL)"/><polygon points="20,30 24,24 22,45 20,45" fill="url(#pL)"/><polygon points="28,30 24,24 26,45 28,45" fill="url(#pL)"/><circle cx="24" cy="11" r="8" fill="none" stroke="url(#pG)" stroke-width="1.5"/><ellipse cx="24" cy="11" rx="3.1" ry="8" fill="none" stroke="url(#pG)" stroke-width="1.3"/><line x1="24" y1="3" x2="24" y2="19" stroke="url(#pG)" stroke-width="1.1"/></svg>
+    <div><div class="pnav-name">FINTEX GLOBAL</div><div class="pnav-sub">Practice Portal</div></div>
+  </div>
+  <div class="pnav-right">
+    <span class="pill-role" id="rolePill" style="display:none;"></span>
+    <button class="bell" id="bellBtn" style="display:none;" onclick="openNotifs()" title="Notifications" aria-label="Notifications">🔔<span class="bell-dot" id="bellDot" style="display:none;">0</span></button>
+    <a href="index.html" class="ab">← Website</a>
+    <button class="btn-out" id="logoutBtn" style="display:none;" onclick="doLogout()">Sign Out</button>
+  </div>
+</nav>
+
+<div class="auth-wrap" id="loginPage">
+  <div class="auth-card">
+    <svg class="auth-logo" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="aL" x1="0%" y1="100%" x2="60%" y2="0%"><stop offset="0%" stop-color="#0E3463"/><stop offset="55%" stop-color="#1E6FB8"/><stop offset="100%" stop-color="#4FD0EC"/></linearGradient><linearGradient id="aG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9BE8FB"/><stop offset="100%" stop-color="#39B6E6"/></linearGradient></defs><polygon points="9,45 17,22 20,30 13,45" fill="url(#aL)"/><polygon points="22,45 24,24 26,24 26,45" fill="url(#aL)"/><polygon points="39,45 31,22 28,30 35,45" fill="url(#aL)"/><polygon points="20,30 24,24 22,45 20,45" fill="url(#aL)"/><polygon points="28,30 24,24 26,45 28,45" fill="url(#aL)"/><circle cx="24" cy="11" r="8" fill="none" stroke="url(#aG)" stroke-width="1.5"/><ellipse cx="24" cy="11" rx="3.1" ry="8" fill="none" stroke="url(#aG)" stroke-width="1.3"/><line x1="24" y1="3" x2="24" y2="19" stroke="url(#aG)" stroke-width="1.1"/></svg>
+    <div class="auth-title">Welcome to Fintex</div>
+    <div class="auth-sub">Beyond the Books. Beyond Borders.</div>
+    <div class="seg">
+      <button class="seg-btn active" id="seg-client" onclick="switchTab('client')">👤 Client</button>
+      <button class="seg-btn" id="seg-admin" onclick="switchTab('admin')">🛡️ Team / Admin</button>
+    </div>
+    <div class="f-pane active" id="pane-client">
+      <div><label class="lab">Email Address</label><input class="inp" type="email" id="c-email" placeholder="you@company.com" onkeydown="if(event.key==='Enter')doClientLogin()"/></div>
+      <div><label class="lab">Password</label><input class="inp" type="password" id="c-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doClientLogin()"/></div>
+      <button class="btn-go" onclick="doClientLogin()">Sign In →</button>
+      <div class="err" id="c-err">Invalid email or password.</div>
+      <div class="hint">Demo: client@example.com / Client123!</div>
+      <div class="hint" style="margin-top:10px;border-top:1px solid var(--border);padding-top:12px;">New to Fintex? <a href="#" onclick="openSignup();return false;" style="color:var(--cyan);font-weight:700;text-decoration:none;">Create your client account →</a></div>
+    </div>
+    <div class="f-pane" id="pane-admin">
+      <div><label class="lab">Team Email</label><input class="inp" type="email" id="a-email" placeholder="you@fintexglobal.com" onkeydown="if(event.key==='Enter')doAdminLogin()"/></div>
+      <div><label class="lab">Password</label><input class="inp" type="password" id="a-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()"/></div>
+      <button class="btn-go" style="background:linear-gradient(135deg,#1E4B7A,#2E86C1);" onclick="doAdminLogin()">Sign In to Dashboard →</button>
+      <div class="err" id="a-err">Invalid credentials or account disabled.</div>
+      <div class="hint">Demo: admin@fintexglobal.com / FintexAdmin2024!</div>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="clientApp">
+  <div class="main" style="max-width:920px;margin:0 auto;" id="clientInner"></div>
+</div>
+
+<div class="app" id="adminApp">
+  <div class="shell">
+    <aside class="side" id="side">
+      <div class="side-grp">Overview</div>
+      <button class="snav active" data-sec="dashboard" onclick="go('dashboard',this)"><span class="ic">📊</span>Dashboard</button>
+      <button class="snav" data-sec="jobs" onclick="go('jobs',this)"><span class="ic">🗂️</span>Job Manager</button>
+      <div class="side-grp">Clients &amp; Pipeline</div>
+      <button class="snav" data-sec="leads" onclick="go('leads',this)"><span class="ic">📩</span>Leads<span class="bdg" id="bdgLeads" style="display:none;">0</span></button>
+      <button class="snav" data-sec="onboarding" onclick="go('onboarding',this)"><span class="ic">🚀</span>Onboarding<span class="bdg" id="bdgOnb" style="display:none;">0</span></button>
+      <button class="snav" data-sec="approvals" onclick="go('approvals',this)"><span class="ic">✅</span>Sign-up Approvals<span class="bdg" id="bdgApprovals" style="display:none;">0</span></button>
+      <button class="snav" data-sec="clients" onclick="go('clients',this)"><span class="ic">👥</span>Client Database</button>
+      <button class="snav" data-sec="documents" onclick="go('documents',this)"><span class="ic">📁</span>Documents</button>
+      <div class="side-grp">Insights</div>
+      <button class="snav" data-sec="reports" onclick="go('reports',this)"><span class="ic">📈</span>Reports</button>
+      <div class="side-grp">Website</div>
+      <button class="snav" data-sec="content" onclick="go('content',this)" id="navContent"><span class="ic">✨</span>Content &amp; Banners</button>
+      <button class="snav" data-sec="formbuilder" onclick="go('formbuilder',this)" id="navForm"><span class="ic">📝</span>Onboarding Form</button>
+      <div class="side-grp">Administration</div>
+      <button class="snav" data-sec="team" onclick="go('team',this)" id="navTeam"><span class="ic">🛡️</span>Team &amp; Access</button>
+      <button class="snav" data-sec="settings" onclick="go('settings',this)" id="navSettings"><span class="ic">⚙️</span>Settings</button>
+      <button class="snav" data-sec="audit" onclick="go('audit',this)" id="navAudit"><span class="ic">📜</span>Audit Log</button>
+    </aside>
+
+    <main class="main">
+      <section class="sec active" id="sec-dashboard">
+        <div class="ph"><div><div class="ph-t" id="greet">Dashboard</div><div class="ph-s" id="greetSub"></div></div>
+          <div class="ph-actions"><button class="ab green" onclick="openJobModal()" data-perm="edit">+ New Job</button><button class="ab" onclick="openOnbModal()" data-perm="edit">+ Onboard Client</button></div></div>
+        <div class="kpis" id="kpis"></div>
+        <div class="panel"><div class="panel-t">📈 Website Footfall (last 7 days)</div><div id="footChart"></div></div>
+        <div class="panel"><div class="panel-t">🕑 Recent Activity</div><div id="recent" style="font-size:.82rem;color:var(--muted-lt);"></div></div>
+      </section>
+
+      <section class="sec" id="sec-jobs">
+        <div class="ph"><div><div class="ph-t">Job Manager</div><div class="ph-s">Track every engagement across the team — drag cards between stages. Inspired by Monday.com &amp; FYI workflows.</div></div>
+          <div class="ph-actions"><button class="ab" onclick="exportData('jobs','csv')">⬇ CSV</button><button class="ab green" onclick="openJobModal()" data-perm="edit">+ New Job</button></div></div>
+        <div class="kanban" id="kanban"></div>
+      </section>
+
+      <section class="sec" id="sec-leads">
+        <div class="ph"><div><div class="ph-t">Leads</div><div class="ph-s">Enquiries captured from the website contact form.</div></div>
+          <div class="ph-actions"><button class="ab" onclick="exportData('leads','csv')">⬇ CSV</button><button class="ab purple" onclick="exportData('leads','xlsx')">⬇ Excel</button><button class="ab" onclick="exportData('leads','pdf')">⬇ PDF</button></div></div>
+        <div class="panel"><div class="tbl-wrap"><table class="t"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Region</th><th>Service</th><th>Actions</th></tr></thead><tbody id="leadsBody"></tbody></table></div></div>
+      </section>
+
+      <section class="sec" id="sec-onboarding">
+        <div class="ph"><div><div class="ph-t">Client Onboarding</div><div class="ph-s">ATO &amp; TPB-aligned onboarding: proof of identity, TFN/ABN, engagement &amp; AML/KYC. Send a form, collect details, track completion.</div></div>
+          <div class="ph-actions"><button class="ab" onclick="exportData('onboarding','csv')">⬇ CSV</button><button class="ab green" onclick="openOnbModal()" data-perm="edit">+ New Onboarding</button></div></div>
+        <div id="onbList"></div>
+      </section>
+
+      <section class="sec" id="sec-approvals">
+        <div class="ph"><div><div class="ph-t">Sign-up Approvals</div><div class="ph-s">New client sign-ups from the website. Review the details, then approve to create their login automatically.</div></div></div>
+        <div id="approvalsList"></div>
+      </section>
+
+      <section class="sec" id="sec-content">
+        <div class="ph"><div><div class="ph-t">Website Content &amp; Banners</div><div class="ph-s">Manage homepage banner slides and client testimonials without touching any code. Changes show on the website on this browser/device — see the note below for publishing live.</div></div></div>
+        <div id="contentBody"></div>
+      </section>
+
+      <section class="sec" id="sec-formbuilder">
+        <div class="ph"><div><div class="ph-t">Onboarding Form Builder</div><div class="ph-s">Build the client onboarding/intake form like Google Forms or MS Forms — add, edit, reorder or remove fields. This is the form your clients complete in their portal.</div></div>
+          <div class="ph-actions"><button class="ab green" onclick="openFieldModal()" data-perm="edit">+ Add Field</button><button class="ab" onclick="restoreDefaultForm()" data-perm="edit">↺ Restore default</button></div></div>
+        <div id="formBuilderBody"></div>
+      </section>
+
+      <section class="sec" id="sec-clients">
+        <div class="ph"><div><div class="ph-t">Client Database</div><div class="ph-s">Your full client book across Australia, India &amp; UAE.</div></div>
+          <div class="ph-actions"><input class="inp" id="clientSearch" placeholder="Search…" style="max-width:200px;padding:9px 12px;" oninput="renderClients()"/>
+            <button class="ab" onclick="exportData('clients','csv')">⬇ CSV</button><button class="ab purple" onclick="exportData('clients','xlsx')">⬇ Excel</button>
+            <button class="ab green" onclick="openClientModal()" data-perm="edit">+ Add Client</button></div></div>
+        <div class="panel"><div class="tbl-wrap"><table class="t"><thead><tr><th>Name</th><th>Email</th><th>Region</th><th>Service</th><th>Status</th><th>Actions</th></tr></thead><tbody id="clientsBody"></tbody></table></div></div>
+      </section>
+
+      <section class="sec" id="sec-documents">
+        <div class="ph"><div><div class="ph-t">Documents</div><div class="ph-s">Everything clients have submitted through their portal (Hubdoc-style inbox).</div></div></div>
+        <div id="docList"></div>
+      </section>
+
+      <section class="sec" id="sec-reports">
+        <div class="ph"><div><div class="ph-t">Reports</div><div class="ph-s">Generate management reports. Every report exports to PDF, CSV &amp; Excel (.xlsx).</div></div></div>
+        <div id="reportGrid"></div>
+        <div class="note" style="margin-top:14px;">💡 PDF &amp; Excel use libraries loaded from a CDN — they work once your site is online. CSV always works offline. For true cross-visitor website footfall, connect a free analytics tool (see Settings → Analytics).</div>
+      </section>
+
+      <section class="sec" id="sec-team">
+        <div class="ph"><div><div class="ph-t">Team &amp; Access Management</div><div class="ph-s">Manage who is on your team and exactly what they can do. Roles: Viewer · Editor · Editor + Delete · Full Admin.</div></div>
+          <div class="ph-actions"><button class="ab green" onclick="openMemberModal()" data-perm="admin">+ Add Member</button></div></div>
+        <div class="panel"><div class="panel-t">Role permissions</div>
+          <div class="tbl-wrap"><table class="t" style="min-width:0;"><thead><tr><th>Capability</th><th>Viewer</th><th>Editor</th><th>Editor + Delete</th><th>Full Admin</th></tr></thead>
+          <tbody>
+            <tr><td>View all data &amp; reports</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>Add / edit clients, jobs, onboarding</td><td>—</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>Delete records</td><td>—</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>Manage team &amp; passwords</td><td>—</td><td>—</td><td>—</td><td>✅</td></tr>
+            <tr><td>Settings &amp; integrations</td><td>—</td><td>—</td><td>—</td><td>✅</td></tr>
+          </tbody></table></div>
+        </div>
+        <div class="panel"><div class="panel-t">Team members</div><div class="tbl-wrap"><table class="t"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody id="teamBody"></tbody></table></div></div>
+      </section>
+
+      <section class="sec" id="sec-settings">
+        <div class="ph"><div><div class="ph-t">Settings &amp; Integrations</div><div class="ph-s">Company profile, Google Sheets sync, email, and analytics.</div></div></div>
+        <div id="settingsBody"></div>
+      </section>
+
+      <section class="sec" id="sec-audit">
+        <div class="ph"><div><div class="ph-t">Audit Log</div><div class="ph-s">A record of key actions, for compliance and accountability.</div></div>
+          <div class="ph-actions"><button class="ab" onclick="exportData('audit','csv')">⬇ CSV</button><button class="ab red" onclick="clearAudit()" data-perm="admin">Clear</button></div></div>
+        <div class="panel"><div class="tbl-wrap"><table class="t"><thead><tr><th>Time</th><th>User</th><th>Action</th></tr></thead><tbody id="auditBody"></tbody></table></div></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div class="modal-bg" id="modalBg"><div class="modal" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="portal.js"></script>
+</body>
+</html>

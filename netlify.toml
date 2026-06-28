@@ -1,0 +1,17 @@
+# Netlify configuration for Fintex Global Group
+# This pins the site root so index.html is always served at the homepage.
+[build]
+  publish = "."
+
+# Friendly short URLs for the portal (optional, safe)
+[[redirects]]
+  from = "/portal"
+  to = "/portal.html"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/admin"
+  to = "/portal.html"
+  status = 301
+  force = false
